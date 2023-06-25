@@ -4,9 +4,20 @@ package StateMachine.port;
 public interface State {
 
     enum Value {
-        WÜRFELN,
-        FIGUR_AUF_STARTFELD_SETZEN,
-        FIGUREN_BEWEGEN,
+        ROLL_DICE,
+        HAS_ROLLED,
+        MOVES,
+        REMAINING_MOVES,
+        REACHED_FORK,
+        MOVES_BY,
+        START_FIELD,
+        MOVE_FORWARD_BACKWARD,
+        SELECT_FIGURE,
+        MOVE_LEFT_RIGHT,
+        MOVE_LEFT_RIGHT_MIDDLE,
+        PLAYER_TURN,
+        SELECT_MOVE_AMOUNT,
+        DUEL_START,
         END
     }
 

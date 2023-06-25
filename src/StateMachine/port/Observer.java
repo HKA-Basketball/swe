@@ -1,6 +1,6 @@
 package StateMachine.port;
 
-import StateMachine.StateMachineImpl;
+import StateMachine.impl.StateMachineImpl;
 
 public interface Observer {
     void update(StateMachineImpl stateMachine);
