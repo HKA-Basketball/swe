@@ -12,7 +12,5 @@ public interface GuiFactory {
     void renderUebersicht(State.Value prevTyp, State.Value nextTyp, Spieler spieler, List<Spieler> allSpieler);
     void renderUebersicht(State.Value prevTyp, State.Value nextTyp, Spieler spieler, Figur figur, int moveValue, List<Spieler> allSpieler);
     void renderUebersicht(State.Value prevTyp, State.Value nextTyp, Spieler spieler, Figur figur, List<Spieler> allSpieler);
-    void renderUebersicht(State.Value prevTyp, State.Value nextTyp, Spieler spieler, Spieler gegner, List<Spieler> allSpieler);
-
     void renderString(String str);
 }

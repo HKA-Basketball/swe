@@ -11,60 +11,60 @@ import static StateMachine.port.State.Value.*;
 
 class GuiFactoryImpl implements GuiFactory {
 
-    private static final Map<State.Value, String> prev = Map.of(
-            PLAYER_TURN, "%s is am Zug",
-            HAS_ROLLED, "%s hat eine %s gewürfelt",
-            MOVES, "%s bewegt %s",
-            REMAINING_MOVES, "%s kann noch %d Felder gehen",
-            REACHED_FORK, "%s erreicht eine Gabelung",
-            MOVES_BY, "%s bewegt %s um %d Felder"
+    private static final Map<State.Value, String> notifications = Map.of(
+            PLAYER_TURN,    "%s is am Zug",
+            HAS_ROLLED,     "%s hat eine %s gewürfelt",
+            MOVES,          "%s bewegt %s",
+            REMAINING_MOVES,"%s kann noch %d Felder gehen",
+            REACHED_FORK,   "%s erreicht eine Gabelung",
+            MOVES_BY,       "%s bewegt %s um %d Felder"
     );
 
-    private static final Map<State.Value, String> text = Map.of(
-        ROLL_DICE, "Zum Würfeln drücken Sie \"x\"!",
-        START_FIELD, "Wähle ein Startfeld (1 oder 2)!",
-        MOVE_FORWARD_BACKWARD, "Bewege die Figur vorwärts \"v\" oder rückwärts \"r\"!",
-        SELECT_FIGURE, "Wähle eine Figur zum Bewegen aus! %s",
-        MOVE_LEFT_RIGHT, "Bewege die Figur links \"l\" oder rechts \"r\"!",
+    private static final Map<State.Value, String> actions = Map.of(
+        ROLL_DICE,              "Zum Würfeln drücken Sie \"x\"!",
+        START_FIELD,            "Wähle ein Startfeld (1 oder 2)!",
+        MOVE_FORWARD_BACKWARD,  "Bewege die Figur vorwärts \"v\" oder rückwärts \"r\"!",
+        SELECT_FIGURE,          "Wähle eine Figur zum Bewegen aus! %s",
+        MOVE_LEFT_RIGHT,        "Bewege die Figur links \"l\" oder rechts \"r\"!",
         MOVE_LEFT_RIGHT_MIDDLE, "Bewege die Figur links \"l\", rechts \"r\" oder mittig \"m\"!",
-        PLAYER_TURN, "%s is am Zug",
-        SELECT_MOVE_AMOUNT, "Wähle die Anzahl der Felder zum Bewegen aus!",
-        DUEL_START, "%s beginnt ein Duell mit %s",
-        END, "Letzter Zug!"
+        PLAYER_TURN,            "%s is am Zug",
+        SELECT_MOVE_AMOUNT,     "Wähle die Anzahl der Felder zum Bewegen aus!",
+        DUEL_START,             "%s beginnt ein Duell mit %s",
+        END,                    "Letzter Zug!"
     );
 
 
-    private void renderPreview(State.Value renderTyp, Spieler spieler, Figur figur, int moveValue) {
+    private void renderNotification(State.Value renderTyp, Spieler spieler, Figur figur, int moveValue) {
         switch(renderTyp) {
             case HAS_ROLLED -> System.out.println(String.format(
-                    prev.get(renderTyp), spieler, spieler.getDiceValue()));
+                    notifications.get(renderTyp), spieler, spieler.getDiceValue()));
             case REMAINING_MOVES -> System.out.println(String.format(
-                    prev.get(renderTyp), spieler, moveValue));
+                    notifications.get(renderTyp), spieler, moveValue));
             case MOVES_BY -> System.out.println(String.format(
-                    prev.get(renderTyp), spieler, figur, moveValue));
+                    notifications.get(renderTyp), spieler, figur, moveValue));
             case PLAYER_TURN -> System.out.println(String.format(
-                    prev.get(renderTyp), spieler));
+                    notifications.get(renderTyp), spieler));
             case REACHED_FORK -> System.out.println(String.format(
-                    prev.get(renderTyp), figur));
-            default -> System.out.println(prev.get(renderTyp));
+                    notifications.get(renderTyp), figur));
+            default -> System.out.println(notifications.get(renderTyp));
         }
     }
 
-    private void renderPreview(State.Value renderTyp, Spieler spieler) {
-        renderPreview(renderTyp, spieler, spieler.getFiguren().get(0), 0);
+    private void renderNotification(State.Value renderTyp, Spieler spieler) {
+        renderNotification(renderTyp, spieler, spieler.getFiguren().get(0), 0);
     }
 
-    private void renderPreview(State.Value renderTyp, Spieler spieler, Figur figur) {
-        renderPreview(renderTyp, spieler, figur, 0);
+    private void renderNotification(State.Value renderTyp, Spieler spieler, Figur figur) {
+        renderNotification(renderTyp, spieler, figur, 0);
     }
 
     private void renderAction(State.Value renderTyp, Spieler spieler, Spieler gegner) {
         switch(renderTyp) {
-            case PLAYER_TURN -> System.out.println(String.format(text.get(renderTyp), spieler));
-            case DUEL_START -> System.out.println(String.format(text.get(renderTyp), spieler, gegner));
-            case SELECT_FIGURE -> System.out.println(String.format(text.get(renderTyp),
+            case PLAYER_TURN -> System.out.println(String.format(actions.get(renderTyp), spieler));
+            case DUEL_START -> System.out.println(String.format(actions.get(renderTyp), spieler, gegner));
+            case SELECT_FIGURE -> System.out.println(String.format(actions.get(renderTyp),
                     spieler.getFigurenAufSpielfeld().stream().map(Object::toString).collect(Collectors.joining(", "))));
-            default -> System.out.println(text.get(renderTyp));
+            default -> System.out.println(actions.get(renderTyp));
         }
     }
 
@@ -92,7 +92,7 @@ class GuiFactoryImpl implements GuiFactory {
     }
 
     public void renderUebersicht(State.Value prevTyp, State.Value nextTyp, Spieler spieler, List<Spieler> allSpieler) {
-        renderPreview(prevTyp, spieler);
+        renderNotification(prevTyp, spieler);
 
         renderGameInfo(allSpieler);
 
@@ -100,7 +100,7 @@ class GuiFactoryImpl implements GuiFactory {
     }
 
     public void renderUebersicht(State.Value prevTyp, State.Value renderTyp, Spieler spieler, Figur figur, int moveValue, List<Spieler> allSpieler) {
-        renderPreview(prevTyp, spieler, figur, moveValue);
+        renderNotification(prevTyp, spieler, figur, moveValue);
 
         renderGameInfo(allSpieler);
 
@@ -108,19 +108,11 @@ class GuiFactoryImpl implements GuiFactory {
     }
 
     public void renderUebersicht(State.Value prevTyp, State.Value nextTyp, Spieler spieler, Figur figur, List<Spieler> allSpieler) {
-        renderPreview(prevTyp, spieler, figur);
+        renderNotification(prevTyp, spieler, figur);
 
         renderGameInfo(allSpieler);
 
         renderAction(nextTyp, spieler);
-    }
-
-    public void renderUebersicht(State.Value prevTyp, State.Value nextTyp, Spieler spieler, Spieler gegner, List<Spieler> allSpieler) {
-        renderPreview(prevTyp, spieler);
-
-        renderGameInfo(allSpieler);
-
-        renderAction(nextTyp, spieler, gegner);
     }
 
     public void renderString(String str) {

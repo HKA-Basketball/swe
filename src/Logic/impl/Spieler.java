@@ -8,9 +8,9 @@ import java.util.List;
 public class Spieler {
 
     public enum Color {
-        ROT("Rot"),
-        BLAU("Blau"),
-        GELB("Gelb");
+        RED("Rot"),
+        BLUE("Blau"),
+        YELLOW("Gelb");
 
         private final String colorName;
 
@@ -30,7 +30,7 @@ public class Spieler {
         return farbe.name();
     }
 
-    public Spieler(String name, Color farbe, List<Gabelung> startFeld) {
+    public Spieler(String name, Color farbe, List<Start> startFeld) {
         this.name = name;
         this.farbe = farbe;
 
@@ -40,8 +40,8 @@ public class Spieler {
             figuren.add(figur);
         }
 
-        startFelder.add((Start) startFeld.get(0));
-        startFelder.add((Start) startFeld.get(1));
+        startFelder.add(startFeld.get(0));
+        startFelder.add(startFeld.get(1));
 
         // Outer cube
         // Player Rot: Start Id = 1
