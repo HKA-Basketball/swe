@@ -41,7 +41,7 @@ public class PlayingField {
                     //startingFields.get(BLACK).add(tmp);
                 }
 
-                if (current instanceof Gabelung currentGab) {
+                if (current instanceof Fork currentGab) {
                     currentGab.setLeft(nextField);
                 } else {
                     ((Path) current).setNext(nextField);
@@ -49,7 +49,7 @@ public class PlayingField {
                 nextField.setPrevious(current);
             } else {
                 nextField = new Path(i);
-                if (current instanceof Gabelung currentGab) {
+                if (current instanceof Fork currentGab) {
                     currentGab.setLeft(nextField);
                 } else {
                     ((Path) current).setNext(nextField);
@@ -80,7 +80,7 @@ public class PlayingField {
                     //startingFields.get(Black).add(tmp);
                 }
 
-                if (current instanceof Gabelung currentGab) {
+                if (current instanceof Fork currentGab) {
                     currentGab.setRight(nextField);
                 } else {
                     ((Path) current).setNext(nextField);
@@ -88,7 +88,7 @@ public class PlayingField {
                 nextField.setPrevious(current);
             } else {
                 nextField = new Path(i);
-                if (current instanceof Gabelung currentGab) {
+                if (current instanceof Fork currentGab) {
                     currentGab.setRight(nextField);
                 } else {
                     ((Path) current).setNext(nextField);

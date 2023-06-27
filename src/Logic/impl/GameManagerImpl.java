@@ -279,13 +279,13 @@ public class GameManagerImpl implements GameManager, Observer {
         Figur figure = player.getFiguren().get(player.getMovingFigure());
         Field currentPosition = figure.getPosition();
 
-        if (currentPosition instanceof Gabelung gabelung) {
+        if (currentPosition instanceof Fork fork) {
             if ("r".equals(input)) {
-                figure.setPosition(gabelung.getRight());
+                figure.setPosition(fork.getRight());
             } else if ("l".equals(input)) {
-                figure.setPosition(gabelung.getLeft());
+                figure.setPosition(fork.getLeft());
             } else {
-                figure.setPosition(gabelung.getPrevious());
+                figure.setPosition(fork.getPrevious());
             }
         }
 
@@ -318,18 +318,18 @@ public class GameManagerImpl implements GameManager, Observer {
         Figur figure = player.getFiguren().get(player.getMovingFigure());
         Field currentPosition = figure.getPosition();
 
-        if (currentPosition instanceof Gabelung gabelung) {
+        if (currentPosition instanceof Fork fork) {
             if ("r".equals(input)) {
-                if (gabelung.getRight().equals(figure.getPreviousPos())) {
-                    figure.setPosition(gabelung.getPrevious());
+                if (fork.getRight().equals(figure.getPreviousPos())) {
+                    figure.setPosition(fork.getPrevious());
                 } else {
-                    figure.setPosition(gabelung.getRight());
+                    figure.setPosition(fork.getRight());
                 }
             } else {
-                if (gabelung.getRight().equals(figure.getPreviousPos())) {
-                    figure.setPosition(gabelung.getPrevious());
+                if (fork.getRight().equals(figure.getPreviousPos())) {
+                    figure.setPosition(fork.getPrevious());
                 } else {
-                    figure.setPosition(gabelung.getLeft());
+                    figure.setPosition(fork.getLeft());
                 }
             }
         }

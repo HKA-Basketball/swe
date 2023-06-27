@@ -2,13 +2,13 @@ package Logic.impl;
 
 import Logic.port.Field;
 
-public class Gabelung implements Field {
+public class Fork implements Field {
     private int id;
     private Field left;
     private Field right;
     private Field previous;
 
-    public Gabelung(int id) {
+    public Fork(int id) {
         this.id = id;
     }
 
