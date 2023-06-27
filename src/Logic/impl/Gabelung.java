@@ -1,12 +1,12 @@
 package Logic.impl;
 
-import Logic.port.Feld;
+import Logic.port.Field;
 
-public class Gabelung implements Feld {
+public class Gabelung implements Field {
     private int id;
-    private Feld left;
-    private Feld right;
-    private Feld previous;
+    private Field left;
+    private Field right;
+    private Field previous;
 
     public Gabelung(int id) {
         this.id = id;
@@ -17,27 +17,27 @@ public class Gabelung implements Feld {
         return id;
     }
 
-    public Feld getLeft() {
+    public Field getLeft() {
         return left;
     }
 
-    public Feld getRight() {
+    public Field getRight() {
         return right;
     }
 
-    public Feld getPrevious() {
+    public Field getPrevious() {
         return previous;
     }
 
-    public void setLeft(Feld left) {
+    public void setLeft(Field left) {
         this.left = left;
     }
 
-    public void setRight(Feld right) {
+    public void setRight(Field right) {
         this.right = right;
     }
 
-    public void setPrevious(Feld previous) {
+    public void setPrevious(Field previous) {
         this.previous = previous;
     }
 }

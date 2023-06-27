@@ -1,13 +1,13 @@
 package Logic.impl;
 
-import Logic.port.Feld;
+import Logic.port.Field;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static Logic.impl.Spieler.Color;
-import static Logic.impl.Spieler.Color.*;
+import static Logic.impl.Player.Color;
+import static Logic.impl.Player.Color.*;
 
 public class PlayingField {
 
@@ -23,11 +23,11 @@ public class PlayingField {
 
     static {
         startingFields.get(RED).add(new Start(1));
-        Feld current = startingFields.get(RED).get(0);
+        Field current = startingFields.get(RED).get(0);
 
         // Outer cube
         for (int i = 2; i <= 56; i++) {
-            Feld nextField;
+            Field nextField;
 
             if (i == 15 || i == 29 || i == 43) {
                 Start tmp = new Start(i);
@@ -44,29 +44,29 @@ public class PlayingField {
                 if (current instanceof Gabelung currentGab) {
                     currentGab.setLeft(nextField);
                 } else {
-                    ((Weg) current).setNext(nextField);
+                    ((Path) current).setNext(nextField);
                 }
                 nextField.setPrevious(current);
             } else {
-                nextField = new Weg(i);
+                nextField = new Path(i);
                 if (current instanceof Gabelung currentGab) {
                     currentGab.setLeft(nextField);
                 } else {
-                    ((Weg) current).setNext(nextField);
+                    ((Path) current).setNext(nextField);
                 }
                 nextField.setPrevious(current);
             }
             current = nextField;
         }
 
-        ((Weg) current).setNext(startingFields.get(RED).get(0));
+        ((Path) current).setNext(startingFields.get(RED).get(0));
         startingFields.get(RED).get(0).setPrevious(current);
 
         startingFields.get(RED).add(new Start(57));
         current = startingFields.get(RED).get(1);
         // Inner cube
         for (int i = 59; i <= 97; i++) {
-            Feld nextField;
+            Field nextField;
 
             if (i == 67 || i == 77 || i == 87) {
                 Start tmp = new Start(i);
@@ -83,22 +83,22 @@ public class PlayingField {
                 if (current instanceof Gabelung currentGab) {
                     currentGab.setRight(nextField);
                 } else {
-                    ((Weg) current).setNext(nextField);
+                    ((Path) current).setNext(nextField);
                 }
                 nextField.setPrevious(current);
             } else {
-                nextField = new Weg(i);
+                nextField = new Path(i);
                 if (current instanceof Gabelung currentGab) {
                     currentGab.setRight(nextField);
                 } else {
-                    ((Weg) current).setNext(nextField);
+                    ((Path) current).setNext(nextField);
                 }
                 nextField.setPrevious(current);
             }
             current = nextField;
         }
 
-        ((Weg) current).setNext(startingFields.get(RED).get(1));
+        ((Path) current).setNext(startingFields.get(RED).get(1));
         startingFields.get(RED).get(1).setPrevious(current);
 
         startingFields.get(RED).get(0).setRight(startingFields.get(RED).get(1));

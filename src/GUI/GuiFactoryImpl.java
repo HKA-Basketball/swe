@@ -1,14 +1,11 @@
 package GUI;
 
-import Logic.impl.Figur;
-import Logic.impl.Spieler;
 import Logic.port.GameManager;
 import StateMachine.impl.StateMachineImpl;
 import StateMachine.port.Observer;
 import StateMachine.port.State;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static StateMachine.port.State.Value.*;
 
@@ -65,7 +62,7 @@ class GuiFactoryImpl implements GuiFactory, Observer {
     private void renderNotification(State.Value renderTyp) {
         switch (renderTyp){
             case ROLL_DICE, ROLL_DICE_AGAIN, SELECT_FIGURE -> renderString(notifications2.get(renderTyp));
-            case SELECT_MOVE_AMOUNT -> renderString(String.format(notifications2.get(renderTyp), gameInfos.getSpieler().get(gameInfos.getCurrentPlayer()), gameInfos.getSpieler().get(gameInfos.getCurrentPlayer()).getMoveValue()));
+            case SELECT_MOVE_AMOUNT -> renderString(String.format(notifications2.get(renderTyp), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getMoveValue()));
             case MOVE_FORWARD_BACKWARD -> renderString(notifications2.get(renderTyp));
             case FORK_REACHED_LEFT_RIGHT_MIDDLE -> renderString(notifications2.get(renderTyp));
             case FORK_REACHED_LEFT_RIGHT -> renderString(notifications2.get(renderTyp));
@@ -82,7 +79,7 @@ class GuiFactoryImpl implements GuiFactory, Observer {
     }
 
     private void renderGameInfo() {
-        gameInfos.getSpieler().forEach(sp -> {
+        gameInfos.getPlayers().forEach(sp -> {
             System.out.print(String.format("\t%s:\t", sp));
 
             if (sp.getFigurenAufHeimat().size() == 5) {

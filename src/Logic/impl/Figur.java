@@ -1,13 +1,13 @@
 package Logic.impl;
 
-import Logic.port.Feld;
+import Logic.port.Field;
 
 public class Figur {
 
     private String id;
-    private Feld position;
+    private Field position;
 
-    private Feld previousPos;
+    private Field previousPos;
     private boolean heimat;
 
     @Override
@@ -20,7 +20,7 @@ public class Figur {
         heimat = true;
     }
 
-    public Feld getPosition() {
+    public Field getPosition() {
         return position;
     }
 
@@ -28,7 +28,7 @@ public class Figur {
         return heimat;
     }
 
-    public void setPosition(Feld position) {
+    public void setPosition(Field position) {
         this.position = position;
     }
 
@@ -40,11 +40,11 @@ public class Figur {
         return id;
     }
 
-    public Feld getPreviousPos() {
+    public Field getPreviousPos() {
         return previousPos;
     }
 
-    public void setPreviousPos(Feld previousPos) {
+    public void setPreviousPos(Field previousPos) {
         this.previousPos = previousPos;
     }
 }

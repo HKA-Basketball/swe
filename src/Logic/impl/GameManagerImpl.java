@@ -1,7 +1,6 @@
 package Logic.impl;
 
-import GUI.GuiFactory;
-import Logic.port.Feld;
+import Logic.port.Field;
 import Logic.port.GameManager;
 import StateMachine.impl.StateMachineImpl;
 import StateMachine.port.Observer;
@@ -21,10 +20,10 @@ public class GameManagerImpl implements GameManager, Observer {
     private String input;
     private int currentPlayer = 0;
     private PlayingField playingField;
-    private List<Spieler> spieler = new ArrayList<>(3);
+    private List<Player> players = new ArrayList<>(3);
 
-    public List<Spieler> getSpieler() {
-        return spieler;
+    public List<Player> getPlayers() {
+        return players;
     }
 
     public int getCurrentPlayer() {
@@ -35,21 +34,21 @@ public class GameManagerImpl implements GameManager, Observer {
         this.input = input;
     }
 
-    public int getPlayerID(Spieler player) {
-        return this.spieler.indexOf(player);
+    public int getPlayerID(Player player) {
+        return this.players.indexOf(player);
     }
 
-    public int getFigureID(Spieler player, Figur figure) {
-        return this.spieler.get(getPlayerID(player)).getFiguren().indexOf(figure);
+    public int getFigureID(Player player, Figur figure) {
+        return this.players.get(getPlayerID(player)).getFiguren().indexOf(figure);
     }
 
     public List<String> getStringListOfMovableFigures() {
-        return Arrays.asList(spieler.get(currentPlayer).getFigurenAufSpielfeld()
+        return Arrays.asList(players.get(currentPlayer).getFigurenAufSpielfeld()
                 .stream().map(Figur::toString).collect(Collectors.joining(";")).split(";"));
 
     }
 
-    public int getFigureIDByString(Spieler player, String figureName) {
+    public int getFigureIDByString(Player player, String figureName) {
         for (Figur figure : player.getFiguren()) {
             if (figure.getId().equals(figureName)) {
                 return getFigureID(player, figure);
@@ -66,7 +65,7 @@ public class GameManagerImpl implements GameManager, Observer {
 
     public void nextPlayer() {
 
-        Spieler player = spieler.get(currentPlayer);
+        Player player = players.get(currentPlayer);
         player.setDiceRolls(0);
 
         for (Figur f : player.getFiguren()) {
@@ -74,7 +73,7 @@ public class GameManagerImpl implements GameManager, Observer {
         }
 
         currentPlayer++;
-        if (currentPlayer >= spieler.size()) {
+        if (currentPlayer >= players.size()) {
             currentPlayer = 0;
         }
         stateMachine.setState(ROLL_DICE);
@@ -99,7 +98,7 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     private void rollDice() {
-        Spieler player = spieler.get(currentPlayer);
+        Player player = players.get(currentPlayer);
         player.setDiceRolls(player.getDiceRolls()+1);
 
         player.setDiceValue(wuerfeln());
@@ -127,7 +126,7 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     private void moveFigures() {
-        Spieler player = spieler.get(currentPlayer);
+        Player player = players.get(currentPlayer);
         if (!isStartBlocked() && player.getDiceValue() == 7) {
             setFigureOnStart();
 
@@ -139,7 +138,7 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     public List<Boolean> getStartStatus() {
-        Spieler player = spieler.get(currentPlayer);
+        Player player = players.get(currentPlayer);
         List<Boolean> startStatus = new ArrayList<>(2);
         startStatus.add(false);
         startStatus.add(false);
@@ -166,19 +165,19 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     private void setFigureOnStart() {
-        Spieler player = spieler.get(currentPlayer);
+        Player player = players.get(currentPlayer);
         List<Boolean> startStatus = getStartStatus();
 
         if (!startStatus.get(0) || !startStatus.get(1)) {
             int figureID = getFigureID(player, player.getFigurenAufHeimat().get(0));
             if (!startStatus.get(0)) {
-                this.spieler.get(currentPlayer).getFiguren().get(figureID)
-                        .setPosition(this.spieler.get(currentPlayer).getStartFelder().get(0));
-                this.spieler.get(currentPlayer).getFiguren().get(figureID).setHeimat(false);
+                this.players.get(currentPlayer).getFiguren().get(figureID)
+                        .setPosition(this.players.get(currentPlayer).getStartFelder().get(0));
+                this.players.get(currentPlayer).getFiguren().get(figureID).setHeimat(false);
             } else if (!startStatus.get(1)) {
-                this.spieler.get(currentPlayer).getFiguren().get(figureID)
-                        .setPosition(this.spieler.get(currentPlayer).getStartFelder().get(1));
-                this.spieler.get(currentPlayer).getFiguren().get(figureID).setHeimat(false);
+                this.players.get(currentPlayer).getFiguren().get(figureID)
+                        .setPosition(this.players.get(currentPlayer).getStartFelder().get(1));
+                this.players.get(currentPlayer).getFiguren().get(figureID).setHeimat(false);
             }
         }
 
@@ -186,7 +185,7 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     public void chooseFigure() {
-        Spieler player = spieler.get(currentPlayer);
+        Player player = players.get(currentPlayer);
 
         /*while (spieler.get(currentPlayer).getDiceValue() > 0) {
             gui.renderUebersicht(State.Value.REMAINING_MOVES, State.Value.SELECT_FIGURE,
@@ -204,7 +203,7 @@ public class GameManagerImpl implements GameManager, Observer {
             //checkForCollision();
         }*/
 
-        if (spieler.get(currentPlayer).getDiceValue() > 0) {
+        if (players.get(currentPlayer).getDiceValue() > 0) {
             stateMachine.setState(State.Value.SELECT_MOVE_AMOUNT);
         } else {
             stateMachine.setState(NEXT_PLAYER);
@@ -212,18 +211,18 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     public void selectMoveAmount() {
-        Spieler player = spieler.get(currentPlayer);
+        Player player = players.get(currentPlayer);
 
         int movingDistance = Integer.parseInt(input);
         player.setMoveValue(movingDistance);
 
-        spieler.get(currentPlayer).setDiceValue(spieler.get(currentPlayer).getDiceValue() - movingDistance);
+        players.get(currentPlayer).setDiceValue(players.get(currentPlayer).getDiceValue() - movingDistance);
 
         stateMachine.setState(MOVE);
     }
 
     public void move() {
-        Spieler player = spieler.get(currentPlayer);
+        Player player = players.get(currentPlayer);
         Figur figure = player.getFiguren().get(player.getMovingFigure());
 
         /*for (int i = 0; i < player.getMoveValue(); i++) {
@@ -235,13 +234,13 @@ public class GameManagerImpl implements GameManager, Observer {
         }*/
         if (player.getMoveValue() > 0) {
             if(figure.getPreviousPos() != null) {
-                if(figure.getPosition() instanceof Weg) {
+                if(figure.getPosition() instanceof Path) {
                     stateMachine.setState(MOVE_DIRECTION);
                 } else {
                     stateMachine.setState(FORK_REACHED_LEFT_RIGHT);
                 }
             } else {
-                if(figure.getPosition() instanceof Weg) {
+                if(figure.getPosition() instanceof Path) {
                     stateMachine.setState(MOVE_FORWARD_BACKWARD);
                 } else {
                     stateMachine.setState(FORK_REACHED_LEFT_RIGHT_MIDDLE);
@@ -258,15 +257,15 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     public void startMoveDirection() {
-        Spieler player = spieler.get(currentPlayer);
+        Player player = players.get(currentPlayer);
         Figur figure = player.getFiguren().get(player.getMovingFigure());
-        Feld currentPosition = figure.getPosition();
+        Field currentPosition = figure.getPosition();
 
-        if (currentPosition instanceof Weg weg) {
+        if (currentPosition instanceof Path path) {
             if ("v".equals(input)) {
-                figure.setPosition(weg.getNext());
+                figure.setPosition(path.getNext());
             } else {
-                figure.setPosition(weg.getPrevious());
+                figure.setPosition(path.getPrevious());
             }
         }
 
@@ -276,9 +275,9 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     public void startMoveFork() {
-        Spieler player = spieler.get(currentPlayer);
+        Player player = players.get(currentPlayer);
         Figur figure = player.getFiguren().get(player.getMovingFigure());
-        Feld currentPosition = figure.getPosition();
+        Field currentPosition = figure.getPosition();
 
         if (currentPosition instanceof Gabelung gabelung) {
             if ("r".equals(input)) {
@@ -296,15 +295,15 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     public void moveDirection() {
-        Spieler player = spieler.get(currentPlayer);
+        Player player = players.get(currentPlayer);
         Figur figure = player.getFiguren().get(player.getMovingFigure());
-        Feld currentPosition = figure.getPosition();
+        Field currentPosition = figure.getPosition();
 
-        if (currentPosition instanceof Weg weg) {
-            if (weg.getPrevious().equals(figure.getPreviousPos())) {
-                figure.setPosition(weg.getNext());
+        if (currentPosition instanceof Path path) {
+            if (path.getPrevious().equals(figure.getPreviousPos())) {
+                figure.setPosition(path.getNext());
             } else {
-                figure.setPosition(weg.getPrevious());
+                figure.setPosition(path.getPrevious());
             }
 
         }
@@ -315,9 +314,9 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     public void moveFork() {
-        Spieler player = spieler.get(currentPlayer);
+        Player player = players.get(currentPlayer);
         Figur figure = player.getFiguren().get(player.getMovingFigure());
-        Feld currentPosition = figure.getPosition();
+        Field currentPosition = figure.getPosition();
 
         if (currentPosition instanceof Gabelung gabelung) {
             if ("r".equals(input)) {
@@ -341,10 +340,10 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     public void checkForCollision() {
-        Spieler player = spieler.get(currentPlayer);
+        Player player = players.get(currentPlayer);
         Figur figure = player.getFiguren().get(player.getMovingFigure());
 
-        for (Spieler enemyPlayer : this.spieler) {
+        for (Player enemyPlayer : this.players) {
             int enemyPlayerID = getPlayerID(enemyPlayer);
             if (currentPlayer == enemyPlayerID) continue;
 
@@ -352,7 +351,7 @@ public class GameManagerImpl implements GameManager, Observer {
                 int enemyFigureID = getFigureID(enemyPlayer, enemyFigure);
 
                 if (figure.getPosition().equals(enemyFigure.getPosition())) {
-                    spieler.get(enemyPlayerID).getFiguren().get(enemyFigureID).setHeimat(true);
+                    players.get(enemyPlayerID).getFiguren().get(enemyFigureID).setHeimat(true);
                 }
             }
         }
@@ -361,9 +360,9 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     private void creatPlayer() {
-        spieler.add(new Spieler("Player1", Spieler.Color.RED, playingField.getStartingFields().get(Spieler.Color.RED)));
-        spieler.add(new Spieler("Player2", Spieler.Color.BLUE, playingField.getStartingFields().get(Spieler.Color.BLUE)));
-        spieler.add(new Spieler("Player3", Spieler.Color.YELLOW, playingField.getStartingFields().get(Spieler.Color.YELLOW)));
+        players.add(new Player("Player1", Player.Color.RED, playingField.getStartingFields().get(Player.Color.RED)));
+        players.add(new Player("Player2", Player.Color.BLUE, playingField.getStartingFields().get(Player.Color.BLUE)));
+        players.add(new Player("Player3", Player.Color.YELLOW, playingField.getStartingFields().get(Player.Color.YELLOW)));
     }
 
     @Override

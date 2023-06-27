@@ -1,15 +1,14 @@
 package Logic.port;
 
-import Logic.impl.Figur;
 import Logic.impl.GameManagerImpl;
-import Logic.impl.Spieler;
+import Logic.impl.Player;
 
 import java.util.List;
 
 public interface GameManager {
     GameManager FACTORY = new GameManagerImpl();
 
-    List<Spieler> getSpieler();
+    List<Player> getPlayers();
     int getCurrentPlayer();
     List<String> getStringListOfMovableFigures();
 

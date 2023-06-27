@@ -4,7 +4,6 @@ import Logic.port.GameManager;
 import StateMachine.StateMachineFactory;
 import StateMachine.impl.StateMachineImpl;
 import StateMachine.port.Observer;
-import StateMachine.port.State;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -77,7 +76,7 @@ public class GuiController implements Observer {
         switch (stateMachine.getState()){
             case ROLL_DICE, ROLL_DICE_AGAIN -> gameInfos.setInput(getStringInput("xy"));
             case SELECT_FIGURE -> gameInfos.setInput(getStringInput(gameInfos.getStringListOfMovableFigures()));
-            case SELECT_MOVE_AMOUNT -> gameInfos.setInput(String.valueOf(getIntInput(gameInfos.getSpieler().get(gameInfos.getCurrentPlayer()).getDiceValue())));
+            case SELECT_MOVE_AMOUNT -> gameInfos.setInput(String.valueOf(getIntInput(gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getDiceValue())));
             case MOVE_FORWARD_BACKWARD -> gameInfos.setInput(getStringInput("vr"));
             case FORK_REACHED_LEFT_RIGHT_MIDDLE -> gameInfos.setInput(getStringInput("lmr"));
             case FORK_REACHED_LEFT_RIGHT -> gameInfos.setInput(getStringInput("lr"));

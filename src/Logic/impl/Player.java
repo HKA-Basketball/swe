@@ -3,7 +3,7 @@ package Logic.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Spieler {
+public class Player {
 
     public enum Color {
         RED("Rot"),
@@ -32,7 +32,7 @@ public class Spieler {
         return farbe.name();
     }
 
-    public Spieler(String name, Color farbe, List<Start> startFeld) {
+    public Player(String name, Color farbe, List<Start> startFeld) {
         this.name = name;
         this.farbe = farbe;
 
