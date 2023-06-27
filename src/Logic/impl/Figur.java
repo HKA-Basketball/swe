@@ -6,6 +6,8 @@ public class Figur {
 
     private String id;
     private Feld position;
+
+    private Feld previousPos;
     private boolean heimat;
 
     @Override
@@ -36,5 +38,13 @@ public class Figur {
 
     public String getId() {
         return id;
+    }
+
+    public Feld getPreviousPos() {
+        return previousPos;
+    }
+
+    public void setPreviousPos(Feld previousPos) {
+        this.previousPos = previousPos;
     }
 }

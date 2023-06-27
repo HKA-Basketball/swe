@@ -1,7 +1,5 @@
 package Logic.impl;
 
-import Logic.port.GameManager;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +19,11 @@ public class Spieler {
 
     private String name;
     private Color farbe;
+    private int diceRolls;
     private int diceValue;
+    private int moveValue;
+    private int movingFigure;
+    private boolean reachedFork;
     private List<Figur> figuren = new ArrayList<>(5);
     private List<Start> startFelder = new ArrayList<>(2);
 
@@ -66,7 +68,7 @@ public class Spieler {
         List<Figur> figurenAufHeimat = new ArrayList<>(5);
 
         figuren.forEach(figur -> {
-            if(figur.isHeimat()) figurenAufHeimat.add(figur);
+            if (figur.isHeimat()) figurenAufHeimat.add(figur);
         });
 
         return figurenAufHeimat;
@@ -76,7 +78,7 @@ public class Spieler {
         List<Figur> figurenAufSpielfeld = new ArrayList<>(5);
 
         figuren.forEach(figur -> {
-            if(!figur.isHeimat()) figurenAufSpielfeld.add(figur);
+            if (!figur.isHeimat()) figurenAufSpielfeld.add(figur);
         });
 
         return figurenAufSpielfeld;
@@ -100,5 +102,29 @@ public class Spieler {
 
     public Color getFarbe() {
         return farbe;
+    }
+
+    public int getMovingFigure() {
+        return movingFigure;
+    }
+
+    public void setMovingFigure(int movingFigure) {
+        this.movingFigure = movingFigure;
+    }
+
+    public int getMoveValue() {
+        return moveValue;
+    }
+
+    public void setMoveValue(int moveValue) {
+        this.moveValue = moveValue;
+    }
+
+    public int getDiceRolls() {
+        return diceRolls;
+    }
+
+    public void setDiceRolls(int diceRolls) {
+        this.diceRolls = diceRolls;
     }
 }

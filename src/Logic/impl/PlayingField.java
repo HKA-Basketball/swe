@@ -29,19 +29,19 @@ public class PlayingField {
         for (int i = 2; i <= 56; i++) {
             Feld nextField;
 
-            if(i == 15 || i == 29 || i == 43) {
+            if (i == 15 || i == 29 || i == 43) {
                 Start tmp = new Start(i);
                 nextField = tmp;
 
-                if(i == 15) {
+                if (i == 15) {
                     startingFields.get(YELLOW).add(tmp);
-                } else if (i == 29 ) {
+                } else if (i == 29) {
                     startingFields.get(BLUE).add(tmp);
                 } else if (i == 43) {
                     //startingFields.get(BLACK).add(tmp);
                 }
 
-                if(current instanceof Gabelung currentGab) {
+                if (current instanceof Gabelung currentGab) {
                     currentGab.setLeft(nextField);
                 } else {
                     ((Weg) current).setNext(nextField);
@@ -49,10 +49,10 @@ public class PlayingField {
                 nextField.setPrevious(current);
             } else {
                 nextField = new Weg(i);
-                if(current instanceof Gabelung currentGab) {
+                if (current instanceof Gabelung currentGab) {
                     currentGab.setLeft(nextField);
                 } else {
-                    ((Weg)current).setNext(nextField);
+                    ((Weg) current).setNext(nextField);
                 }
                 nextField.setPrevious(current);
             }
@@ -68,11 +68,11 @@ public class PlayingField {
         for (int i = 59; i <= 97; i++) {
             Feld nextField;
 
-            if(i == 67 || i == 77 || i == 87) {
+            if (i == 67 || i == 77 || i == 87) {
                 Start tmp = new Start(i);
                 nextField = tmp;
 
-                if(i == 67) {
+                if (i == 67) {
                     startingFields.get(YELLOW).add(tmp);
                 } else if (i == 77) {
                     startingFields.get(BLUE).add(tmp);
@@ -80,7 +80,7 @@ public class PlayingField {
                     //startingFields.get(Black).add(tmp);
                 }
 
-                if(current instanceof Gabelung currentGab) {
+                if (current instanceof Gabelung currentGab) {
                     currentGab.setRight(nextField);
                 } else {
                     ((Weg) current).setNext(nextField);
@@ -88,10 +88,10 @@ public class PlayingField {
                 nextField.setPrevious(current);
             } else {
                 nextField = new Weg(i);
-                if(current instanceof Gabelung currentGab) {
+                if (current instanceof Gabelung currentGab) {
                     currentGab.setRight(nextField);
                 } else {
-                    ((Weg)current).setNext(nextField);
+                    ((Weg) current).setNext(nextField);
                 }
                 nextField.setPrevious(current);
             }

@@ -13,14 +13,14 @@ public class StateMachineImpl implements StateMachine, Subject {
     private List<Observer> observers;
 
     public StateMachineImpl() {
-        currentState = State.Value.ROLL_DICE;
+        currentState = State.Value.NONE;
         observers = new ArrayList<>();
     }
 
     @Override
     public void setState(State.Value state) {
         currentState = state;
-        notifyObservers();
+        //notifyObservers();
     }
 
     @Override
@@ -30,6 +30,8 @@ public class StateMachineImpl implements StateMachine, Subject {
 
     @Override
     public void attach(Observer observer) {
+
+        //System.err.println("add: " + observer);
         observers.add(observer);
     }
 
@@ -41,6 +43,8 @@ public class StateMachineImpl implements StateMachine, Subject {
     @Override
     public void notifyObservers() {
         for (Observer observer : observers) {
+
+            //System.err.println("Update: " + observer);
             observer.update(this);
         }
     }

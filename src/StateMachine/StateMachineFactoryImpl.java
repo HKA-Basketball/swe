@@ -12,7 +12,8 @@ import java.util.List;
 public class StateMachineFactoryImpl implements StateMachineFactory, Subject, StateMachine {
 
     private StateMachineImpl stateMachine;
-    private void getInstance(){
+
+    public void getInstance() {
         if (this.stateMachine == null)
             this.stateMachine = new StateMachineImpl();
     }
