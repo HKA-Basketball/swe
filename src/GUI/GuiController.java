@@ -33,7 +33,6 @@ public class GuiController implements Observer {
         while (true) {
             stateMachine.notifyObservers();
         }
-
     }
 
     private String getStringInput(List<String> valid) {

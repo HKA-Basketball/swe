@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="Spiel:jar">
+  <artifact type="jar" build-on-make="true" name="Spiel:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/Spiel_jar</output-path>
     <root id="archive" name="Spiel.jar">
       <element id="module-output" name="Spiel" />

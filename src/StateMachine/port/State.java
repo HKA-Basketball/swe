@@ -16,8 +16,7 @@ public interface State {
         FORK_REACHED_LEFT_RIGHT_MIDDLE,
         FORK_REACHED_LEFT_RIGHT,
         CHECK_COLLISION,
-        NEXT_PLAYER,
-        UPDATE_GUI
+        NEXT_PLAYER
     }
 
     public void setState(State.Value state);
