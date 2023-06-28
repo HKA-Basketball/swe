@@ -18,28 +18,28 @@ public class Player {
     }
 
     private String name;
-    private Color farbe;
+    private Color color;
     private int diceRolls;
     private int diceValue;
     private int moveValue;
     private int movingFigure;
     private boolean reachedFork;
-    private List<Figur> figuren = new ArrayList<>(5);
+    private List<Figure> figuren = new ArrayList<>(5);
     private List<Start> startFelder = new ArrayList<>(2);
 
     @Override
     public String toString() {
-        return farbe.name();
+        return color.name();
     }
 
-    public Player(String name, Color farbe, List<Start> startFeld) {
+    public Player(String name, Color color, List<Start> startFeld) {
         this.name = name;
-        this.farbe = farbe;
+        this.color = color;
 
         for (int i = 1; i <= 5; i++) {
-            String id = farbe.name().charAt(0) + String.valueOf(i);
-            Figur figur = new Figur(id);
-            figuren.add(figur);
+            String id = color.name().charAt(0) + String.valueOf(i);
+            Figure figure = new Figure(id);
+            figuren.add(figure);
         }
 
         startFelder.add(startFeld.get(0));
@@ -60,25 +60,25 @@ public class Player {
 
     }
 
-    public List<Figur> getFiguren() {
+    public List<Figure> getFiguren() {
         return figuren;
     }
 
-    public List<Figur> getFigurenAufHeimat() {
-        List<Figur> figurenAufHeimat = new ArrayList<>(5);
+    public List<Figure> getFigurenAufHeimat() {
+        List<Figure> figurenAufHeimat = new ArrayList<>(5);
 
-        figuren.forEach(figur -> {
-            if (figur.isHeimat()) figurenAufHeimat.add(figur);
+        figuren.forEach(figure -> {
+            if (figure.isHome()) figurenAufHeimat.add(figure);
         });
 
         return figurenAufHeimat;
     }
 
-    public List<Figur> getFigurenAufSpielfeld() {
-        List<Figur> figurenAufSpielfeld = new ArrayList<>(5);
+    public List<Figure> getFigurenAufSpielfeld() {
+        List<Figure> figurenAufSpielfeld = new ArrayList<>(5);
 
-        figuren.forEach(figur -> {
-            if (!figur.isHeimat()) figurenAufSpielfeld.add(figur);
+        figuren.forEach(figure -> {
+            if (!figure.isHome()) figurenAufSpielfeld.add(figure);
         });
 
         return figurenAufSpielfeld;
@@ -96,12 +96,12 @@ public class Player {
         this.diceValue = diceValue;
     }
 
-    public void setFarbe(Color farbe) {
-        this.farbe = farbe;
+    public void setColor(Color color) {
+        this.color = color;
     }
 
-    public Color getFarbe() {
-        return farbe;
+    public Color getColor() {
+        return color;
     }
 
     public int getMovingFigure() {

@@ -2,38 +2,38 @@ package Logic.impl;
 
 import Logic.port.Field;
 
-public class Figur {
+public class Figure {
 
     private String id;
     private Field position;
 
     private Field previousPos;
-    private boolean heimat;
+    private boolean home;
 
     @Override
     public String toString() {
         return id;
     }
 
-    public Figur(String id) {
+    public Figure(String id) {
         this.id = id;
-        heimat = true;
+        home = true;
     }
 
     public Field getPosition() {
         return position;
     }
 
-    public boolean isHeimat() {
-        return heimat;
+    public boolean isHome() {
+        return home;
     }
 
     public void setPosition(Field position) {
         this.position = position;
     }
 
-    public void setHeimat(boolean heimat) {
-        this.heimat = heimat;
+    public void setHome(boolean home) {
+        this.home = home;
     }
 
     public String getId() {
