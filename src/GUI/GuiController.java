@@ -73,7 +73,7 @@ public class GuiController implements Observer {
 
     @Override
     public void update(StateMachineImpl stateMachine) {
-        System.err.println(stateMachine.getState());
+        //System.err.println(stateMachine.getState());
         switch (stateMachine.getState()){
             case ROLL_DICE, ROLL_DICE_AGAIN -> gameInfos.setInput(getStringInput("xy"));
             case SELECT_FIGURE -> gameInfos.setInput(getStringInput(gameInfos.getStringListOfMovableFigures()));
@@ -81,7 +81,6 @@ public class GuiController implements Observer {
             case MOVE_FORWARD_BACKWARD -> gameInfos.setInput(getStringInput("vr"));
             case FORK_REACHED_LEFT_RIGHT_MIDDLE -> gameInfos.setInput(getStringInput("lmr"));
             case FORK_REACHED_LEFT_RIGHT -> gameInfos.setInput(getStringInput("lr"));
-            //case MOVE_DIRECTION -> gameInfos.setInput(getStringInput("vr"));
         }
     }
 }

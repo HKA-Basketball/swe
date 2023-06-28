@@ -18,6 +18,7 @@ public class GameManagerImpl implements GameManager, Observer {
 
 
     private StateMachineFactory stateMachine = StateMachineFactory.FACTORY;
+    private State.Value nextState = NONE;
     private String input;
     private int currentPlayer = 0;
     private PlayingField playingField;
@@ -188,21 +189,9 @@ public class GameManagerImpl implements GameManager, Observer {
     public void chooseFigure() {
         Spieler player = spieler.get(currentPlayer);
 
-        /*while (spieler.get(currentPlayer).getDiceValue() > 0) {
-            gui.renderUebersicht(State.Value.REMAINING_MOVES, State.Value.SELECT_FIGURE,
-                    player, null, player.getDiceValue(), this.spieler);
-
-            String figureName = getStringInput(getStringListOfMovableFigures(player));
-            int figureID = getFigureIDByString(player, figureName);
-            player.setMovingFigure(figureID);
-
-            gui.renderUebersicht(State.Value.REMAINING_MOVES, State.Value.SELECT_MOVE_AMOUNT,
-                    player, player.getFiguren().get(figureID), player.getDiceValue(), this.spieler);
-
-
-            //moveFigure();
-            //checkForCollision();
-        }*/
+        String figureName = input;
+        int figureID = getFigureIDByString(player, figureName);
+        player.setMovingFigure(figureID);
 
         if (spieler.get(currentPlayer).getDiceValue() > 0) {
             stateMachine.setState(State.Value.SELECT_MOVE_AMOUNT);
@@ -213,6 +202,8 @@ public class GameManagerImpl implements GameManager, Observer {
 
     public void selectMoveAmount() {
         Spieler player = spieler.get(currentPlayer);
+        Figur figure = player.getFiguren().get(player.getMovingFigure());
+        figure.setPreviousPos(null);
 
         int movingDistance = Integer.parseInt(input);
         player.setMoveValue(movingDistance);
@@ -226,13 +217,6 @@ public class GameManagerImpl implements GameManager, Observer {
         Spieler player = spieler.get(currentPlayer);
         Figur figure = player.getFiguren().get(player.getMovingFigure());
 
-        /*for (int i = 0; i < player.getMoveValue(); i++) {
-            if (i == 0) {
-                startMoveDirection();
-            } else {
-                moveDirection();
-            }
-        }*/
         if (player.getMoveValue() > 0) {
             if(figure.getPreviousPos() != null) {
                 if(figure.getPosition() instanceof Weg) {
@@ -249,12 +233,13 @@ public class GameManagerImpl implements GameManager, Observer {
             }
         }
         else if(player.getDiceValue() > 0) {
-            stateMachine.setState(SELECT_MOVE_AMOUNT);
+            nextState = SELECT_FIGURE;
+            stateMachine.setState(CHECK_COLLISION);
 
         } else {
+            nextState = NEXT_PLAYER;
             stateMachine.setState(CHECK_COLLISION);
         }
-
     }
 
     public void startMoveDirection() {
@@ -357,7 +342,7 @@ public class GameManagerImpl implements GameManager, Observer {
             }
         }
 
-        stateMachine.setState(NEXT_PLAYER);
+        stateMachine.setState(nextState);
     }
 
     private void creatPlayer() {
@@ -368,8 +353,6 @@ public class GameManagerImpl implements GameManager, Observer {
 
     @Override
     public void update(StateMachineImpl stateMachine) {
-        System.out.println(stateMachine.getState());
-
         switch (stateMachine.getState()){
             case ROLL_DICE, ROLL_DICE_AGAIN -> rollDice();
             case START_FIELD -> setFigureOnStart();
