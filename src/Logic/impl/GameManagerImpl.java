@@ -40,17 +40,17 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     public int getFigureID(Player player, Figure figure) {
-        return this.players.get(getPlayerID(player)).getFiguren().indexOf(figure);
+        return this.players.get(getPlayerID(player)).getFigures().indexOf(figure);
     }
 
     public List<String> getStringListOfMovableFigures() {
-        return Arrays.asList(players.get(currentPlayer).getFigurenAufSpielfeld()
+        return Arrays.asList(players.get(currentPlayer).getPlayingFieldFigures()
                 .stream().map(Figure::toString).collect(Collectors.joining(";")).split(";"));
 
     }
 
     public int getFigureIDByString(Player player, String figureName) {
-        for (Figure figure : player.getFiguren()) {
+        for (Figure figure : player.getFigures()) {
             if (figure.getId().equals(figureName)) {
                 return getFigureID(player, figure);
             }
@@ -69,7 +69,7 @@ public class GameManagerImpl implements GameManager, Observer {
         Player player = players.get(currentPlayer);
         player.setDiceRolls(0);
 
-        for (Figure f : player.getFiguren()) {
+        for (Figure f : player.getFigures()) {
             f.setPreviousPos(null);
         }
 
@@ -109,13 +109,13 @@ public class GameManagerImpl implements GameManager, Observer {
 
         System.out.println(player.getDiceValue());
 
-        if(player.getFigurenAufSpielfeld().isEmpty() && player.getDiceRolls() <= 3) {
+        if(player.getPlayingFieldFigures().isEmpty() && player.getDiceRolls() <= 3) {
             if(player.getDiceValue() == 7) {
                 stateMachine.setState(State.Value.START_FIELD);
             } else {
                 stateMachine.setState(State.Value.ROLL_DICE_AGAIN);
             }
-        } else if(!player.getFigurenAufSpielfeld().isEmpty() && player.getDiceRolls() <= 1) {
+        } else if(!player.getPlayingFieldFigures().isEmpty() && player.getDiceRolls() <= 1) {
             if(player.getDiceValue() == 7 && !isStartBlocked()) {
                 stateMachine.setState(State.Value.START_FIELD);
             } else {
@@ -131,7 +131,7 @@ public class GameManagerImpl implements GameManager, Observer {
         if (!isStartBlocked() && player.getDiceValue() == 7) {
             setFigureOnStart();
 
-        } else if (!player.getFigurenAufSpielfeld().isEmpty() && player.getDiceValue() > 0) {
+        } else if (!player.getPlayingFieldFigures().isEmpty() && player.getDiceValue() > 0) {
             chooseFigure();
         }
 
@@ -144,14 +144,14 @@ public class GameManagerImpl implements GameManager, Observer {
         startStatus.add(false);
         startStatus.add(false);
 
-        for (Figure figure : player.getFigurenAufSpielfeld()) {
+        for (Figure figure : player.getPlayingFieldFigures()) {
 
             if (!startStatus.get(0)) {
-                startStatus.set(0, figure.getPosition().equals(player.getStartFelder().get(0)));
+                startStatus.set(0, figure.getPosition().equals(player.getStartFields().get(0)));
             }
 
             if (!startStatus.get(1)) {
-                startStatus.set(1, figure.getPosition().equals(player.getStartFelder().get(1)));
+                startStatus.set(1, figure.getPosition().equals(player.getStartFields().get(1)));
             }
 
             if (startStatus.get(0) && startStatus.get(1)) break;
@@ -170,15 +170,15 @@ public class GameManagerImpl implements GameManager, Observer {
         List<Boolean> startStatus = getStartStatus();
 
         if (!startStatus.get(0) || !startStatus.get(1)) {
-            int figureID = getFigureID(player, player.getFigurenAufHeimat().get(0));
+            int figureID = getFigureID(player, player.getHomeFigures().get(0));
             if (!startStatus.get(0)) {
-                this.players.get(currentPlayer).getFiguren().get(figureID)
-                        .setPosition(this.players.get(currentPlayer).getStartFelder().get(0));
-                this.players.get(currentPlayer).getFiguren().get(figureID).setHome(false);
+                this.players.get(currentPlayer).getFigures().get(figureID)
+                        .setPosition(this.players.get(currentPlayer).getStartFields().get(0));
+                this.players.get(currentPlayer).getFigures().get(figureID).setHome(false);
             } else if (!startStatus.get(1)) {
-                this.players.get(currentPlayer).getFiguren().get(figureID)
-                        .setPosition(this.players.get(currentPlayer).getStartFelder().get(1));
-                this.players.get(currentPlayer).getFiguren().get(figureID).setHome(false);
+                this.players.get(currentPlayer).getFigures().get(figureID)
+                        .setPosition(this.players.get(currentPlayer).getStartFields().get(1));
+                this.players.get(currentPlayer).getFigures().get(figureID).setHome(false);
             }
         }
 
@@ -201,7 +201,7 @@ public class GameManagerImpl implements GameManager, Observer {
 
     public void selectMoveAmount() {
         Player player = players.get(currentPlayer);
-        Figure figure = player.getFiguren().get(player.getMovingFigure());
+        Figure figure = player.getFigures().get(player.getMovingFigure());
         figure.setPreviousPos(null);
 
         int movingDistance = Integer.parseInt(input);
@@ -214,7 +214,7 @@ public class GameManagerImpl implements GameManager, Observer {
 
     public void move() {
         Player player = players.get(currentPlayer);
-        Figure figure = player.getFiguren().get(player.getMovingFigure());
+        Figure figure = player.getFigures().get(player.getMovingFigure());
 
         if (player.getMoveValue() > 0) {
             if(figure.getPreviousPos() != null) {
@@ -243,7 +243,7 @@ public class GameManagerImpl implements GameManager, Observer {
 
     public void startMoveDirection() {
         Player player = players.get(currentPlayer);
-        Figure figure = player.getFiguren().get(player.getMovingFigure());
+        Figure figure = player.getFigures().get(player.getMovingFigure());
         Field currentPosition = figure.getPosition();
 
         if (currentPosition instanceof Path path) {
@@ -261,7 +261,7 @@ public class GameManagerImpl implements GameManager, Observer {
 
     public void startMoveFork() {
         Player player = players.get(currentPlayer);
-        Figure figure = player.getFiguren().get(player.getMovingFigure());
+        Figure figure = player.getFigures().get(player.getMovingFigure());
         Field currentPosition = figure.getPosition();
 
         if (currentPosition instanceof Fork fork) {
@@ -281,7 +281,7 @@ public class GameManagerImpl implements GameManager, Observer {
 
     public void moveDirection() {
         Player player = players.get(currentPlayer);
-        Figure figure = player.getFiguren().get(player.getMovingFigure());
+        Figure figure = player.getFigures().get(player.getMovingFigure());
         Field currentPosition = figure.getPosition();
 
         if (currentPosition instanceof Path path) {
@@ -300,7 +300,7 @@ public class GameManagerImpl implements GameManager, Observer {
 
     public void moveFork() {
         Player player = players.get(currentPlayer);
-        Figure figure = player.getFiguren().get(player.getMovingFigure());
+        Figure figure = player.getFigures().get(player.getMovingFigure());
         Field currentPosition = figure.getPosition();
 
         if (currentPosition instanceof Fork fork) {
@@ -326,17 +326,17 @@ public class GameManagerImpl implements GameManager, Observer {
 
     public void checkForCollision() {
         Player player = players.get(currentPlayer);
-        Figure figure = player.getFiguren().get(player.getMovingFigure());
+        Figure figure = player.getFigures().get(player.getMovingFigure());
 
         for (Player enemyPlayer : this.players) {
             int enemyPlayerID = getPlayerID(enemyPlayer);
             if (currentPlayer == enemyPlayerID) continue;
 
-            for (Figure enemyFigure : enemyPlayer.getFigurenAufSpielfeld()) {
+            for (Figure enemyFigure : enemyPlayer.getPlayingFieldFigures()) {
                 int enemyFigureID = getFigureID(enemyPlayer, enemyFigure);
 
                 if (figure.getPosition().equals(enemyFigure.getPosition())) {
-                    players.get(enemyPlayerID).getFiguren().get(enemyFigureID).setHome(true);
+                    players.get(enemyPlayerID).getFigures().get(enemyFigureID).setHome(true);
                 }
             }
         }

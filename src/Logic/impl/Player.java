@@ -24,8 +24,8 @@ public class Player {
     private int moveValue;
     private int movingFigure;
     private boolean reachedFork;
-    private List<Figure> figuren = new ArrayList<>(5);
-    private List<Start> startFelder = new ArrayList<>(2);
+    private List<Figure> figures = new ArrayList<>(5);
+    private List<Start> startFields = new ArrayList<>(2);
 
     @Override
     public String toString() {
@@ -39,11 +39,11 @@ public class Player {
         for (int i = 1; i <= 5; i++) {
             String id = color.name().charAt(0) + String.valueOf(i);
             Figure figure = new Figure(id);
-            figuren.add(figure);
+            figures.add(figure);
         }
 
-        startFelder.add(startFeld.get(0));
-        startFelder.add(startFeld.get(1));
+        startFields.add(startFeld.get(0));
+        startFields.add(startFeld.get(1));
 
         // Outer cube
         // Player Rot: Start Id = 1
@@ -60,32 +60,32 @@ public class Player {
 
     }
 
-    public List<Figure> getFiguren() {
-        return figuren;
+    public List<Figure> getFigures() {
+        return figures;
     }
 
-    public List<Figure> getFigurenAufHeimat() {
-        List<Figure> figurenAufHeimat = new ArrayList<>(5);
+    public List<Figure> getHomeFigures() {
+        List<Figure> homeFigures = new ArrayList<>(5);
 
-        figuren.forEach(figure -> {
-            if (figure.isHome()) figurenAufHeimat.add(figure);
+        figures.forEach(figure -> {
+            if (figure.isHome()) homeFigures.add(figure);
         });
 
-        return figurenAufHeimat;
+        return homeFigures;
     }
 
-    public List<Figure> getFigurenAufSpielfeld() {
-        List<Figure> figurenAufSpielfeld = new ArrayList<>(5);
+    public List<Figure> getPlayingFieldFigures() {
+        List<Figure> playingFieldFigures = new ArrayList<>(5);
 
-        figuren.forEach(figure -> {
-            if (!figure.isHome()) figurenAufSpielfeld.add(figure);
+        figures.forEach(figure -> {
+            if (!figure.isHome()) playingFieldFigures.add(figure);
         });
 
-        return figurenAufSpielfeld;
+        return playingFieldFigures;
     }
 
-    public List<Start> getStartFelder() {
-        return startFelder;
+    public List<Start> getStartFields() {
+        return startFields;
     }
 
     public int getDiceValue() {

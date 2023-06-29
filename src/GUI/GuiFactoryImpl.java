@@ -42,7 +42,7 @@ class GuiFactoryImpl implements GuiFactory, Observer {
         switch (renderTyp){
             case ROLL_DICE, ROLL_DICE_AGAIN -> renderString(String.format(notifications.get(renderTyp), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer())));
             case SELECT_MOVE_AMOUNT, SELECT_FIGURE -> renderString(String.format(notifications.get(renderTyp), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getDiceValue()));
-            case MOVE_FORWARD_BACKWARD -> renderString(String.format(notifications.get(renderTyp), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getFiguren().get(gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getMovingFigure()), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getMoveValue()));
+            case MOVE_FORWARD_BACKWARD -> renderString(String.format(notifications.get(renderTyp), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getFigures().get(gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getMovingFigure()), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getMoveValue()));
             case FORK_REACHED_LEFT_RIGHT_MIDDLE, FORK_REACHED_LEFT_RIGHT -> renderString(String.format(notifications.get(renderTyp), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer())));
         }
     }
@@ -60,13 +60,13 @@ class GuiFactoryImpl implements GuiFactory, Observer {
         gameInfos.getPlayers().forEach(sp -> {
             System.out.print(String.format("\t%s:\t", sp));
 
-            if (sp.getFigurenAufHeimat().size() == 5) {
+            if (sp.getHomeFigures().size() == 5) {
                 System.out.println("0 von 5 Figuren im Spiel");
 
             } else {
-                System.out.print(String.format("%d von 5 Figuren im Spiel: ", sp.getFigurenAufSpielfeld().size()));
+                System.out.print(String.format("%d von 5 Figuren im Spiel: ", sp.getPlayingFieldFigures().size()));
 
-                sp.getFigurenAufSpielfeld().forEach(figur -> {
+                sp.getPlayingFieldFigures().forEach(figur -> {
                     System.out.print(String.format("%s Feld %s;", figur, figur.getPosition().getID()));
                 });
 
@@ -75,7 +75,7 @@ class GuiFactoryImpl implements GuiFactory, Observer {
         });
     }
 
-    public void renderUebersicht(State.Value type) {
+    public void renderView(State.Value type) {
         renderNotification(type);
 
         renderGameInfo();
@@ -90,12 +90,12 @@ class GuiFactoryImpl implements GuiFactory, Observer {
     @Override
     public void update(StateMachineImpl stateMachine) {
         switch (stateMachine.getState()){
-            case ROLL_DICE, ROLL_DICE_AGAIN -> renderUebersicht(ROLL_DICE);
-            case SELECT_FIGURE -> renderUebersicht(SELECT_FIGURE);
-            case SELECT_MOVE_AMOUNT -> renderUebersicht(SELECT_MOVE_AMOUNT);
-            case MOVE_FORWARD_BACKWARD -> renderUebersicht(MOVE_FORWARD_BACKWARD);
-            case FORK_REACHED_LEFT_RIGHT_MIDDLE -> renderUebersicht(FORK_REACHED_LEFT_RIGHT_MIDDLE);
-            case FORK_REACHED_LEFT_RIGHT -> renderUebersicht(FORK_REACHED_LEFT_RIGHT);
+            case ROLL_DICE, ROLL_DICE_AGAIN -> renderView(ROLL_DICE);
+            case SELECT_FIGURE -> renderView(SELECT_FIGURE);
+            case SELECT_MOVE_AMOUNT -> renderView(SELECT_MOVE_AMOUNT);
+            case MOVE_FORWARD_BACKWARD -> renderView(MOVE_FORWARD_BACKWARD);
+            case FORK_REACHED_LEFT_RIGHT_MIDDLE -> renderView(FORK_REACHED_LEFT_RIGHT_MIDDLE);
+            case FORK_REACHED_LEFT_RIGHT -> renderView(FORK_REACHED_LEFT_RIGHT);
         }
     }
 }
