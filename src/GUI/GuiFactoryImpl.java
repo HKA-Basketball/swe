@@ -24,7 +24,6 @@ class GuiFactoryImpl implements GuiFactory, Observer {
             FORK_REACHED_LEFT_RIGHT_MIDDLE, "%s erreicht eine Gabelung",
             FORK_REACHED_LEFT_RIGHT, "%s erreicht eine Gabelung",
             MOVE_FORWARD_BACKWARD, "%s bewegt %s um %d Felder"
-
     );
 
     private static final Map<State.Value, String> actions = Map.of(
@@ -36,8 +35,6 @@ class GuiFactoryImpl implements GuiFactory, Observer {
             MOVE_FORWARD_BACKWARD, "Bewege die Figur vorwärts \"v\" oder rückwärts \"r\"!",
             FORK_REACHED_LEFT_RIGHT_MIDDLE, "Bewege die Figur links \"l\", rechts \"r\" oder mittig \"m\"!",
             FORK_REACHED_LEFT_RIGHT, "Bewege die Figur links \"l\" oder rechts \"r\"!"
-
-
     );
 
     private void renderNotification(State.Value renderTyp) {
