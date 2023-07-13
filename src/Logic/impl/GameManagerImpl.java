@@ -35,6 +35,10 @@ public class GameManagerImpl implements GameManager, Observer {
         this.input = input;
     }
 
+    public String getInput() {
+        return this.input;
+    }
+
     public int getPlayerID(Player player) {
         return this.players.indexOf(player);
     }

@@ -13,4 +13,5 @@ public interface GameManager {
     List<String> getStringListOfMovableFigures();
 
     void setInput(String input);
+    String getInput();
 }
