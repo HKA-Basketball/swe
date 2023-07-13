@@ -1,5 +1,6 @@
 package GUI;
 
+import Logic.impl.Player;
 import Logic.port.GameManager;
 import StateMachine.impl.StateMachineImpl;
 import StateMachine.port.Observer;
@@ -15,7 +16,7 @@ class GuiFactoryImpl implements GuiFactory, Observer {
 
     private static final Map<State.Value, String> notifications = Map.of(
             ROLL_DICE, "%s is am Zug",
-            ROLL_DICE_AGAIN, "%s hat eine %s gewürfelt",
+            ROLL_DICE_AGAIN, "%s hat eine %d gewürfelt",
             START_FIELD, "%s hat eine %s gewürfelt",
             SELECT_FIGURE, "%s kann noch %d Felder gehen",
             SELECT_MOVE_AMOUNT, "%s kann noch %d Felder gehen",
@@ -40,10 +41,14 @@ class GuiFactoryImpl implements GuiFactory, Observer {
 
     private void renderNotification(State.Value renderTyp) {
         switch (renderTyp){
-            case ROLL_DICE, ROLL_DICE_AGAIN -> renderString(String.format(notifications.get(renderTyp), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer())));
-            case SELECT_MOVE_AMOUNT, SELECT_FIGURE -> renderString(String.format(notifications.get(renderTyp), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getDiceValue()));
-            case MOVE_FORWARD_BACKWARD -> renderString(String.format(notifications.get(renderTyp), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getFigures().get(gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getMovingFigure()), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getMoveValue()));
-            case FORK_REACHED_LEFT_RIGHT_MIDDLE, FORK_REACHED_LEFT_RIGHT -> renderString(String.format(notifications.get(renderTyp), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer())));
+            case ROLL_DICE ->
+                    renderString(String.format(notifications.get(renderTyp), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer())));
+            case ROLL_DICE_AGAIN, SELECT_MOVE_AMOUNT, SELECT_FIGURE ->
+                    renderString(String.format(notifications.get(renderTyp), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getDiceValue()));
+            case MOVE_FORWARD_BACKWARD ->
+                    renderString(String.format(notifications.get(renderTyp), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getFigures().get(gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getMovingFigure()), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getMoveValue()));
+            case FORK_REACHED_LEFT_RIGHT_MIDDLE, FORK_REACHED_LEFT_RIGHT ->
+                    renderString(String.format(notifications.get(renderTyp), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer())));
         }
     }
 
@@ -75,6 +80,13 @@ class GuiFactoryImpl implements GuiFactory, Observer {
         });
     }
 
+    public void renderDiceRoll(State.Value type) {
+        if("x".equals(gameInfos.getInput()) || "y".equals(gameInfos.getInput())) {
+            Player player = gameInfos.getPlayers().get(gameInfos.getCurrentPlayer());
+            renderString(String.valueOf(player.getDiceValue()));
+        }
+    }
+
     public void renderView(State.Value type) {
         renderNotification(type);
 
@@ -90,12 +102,14 @@ class GuiFactoryImpl implements GuiFactory, Observer {
     @Override
     public void update(StateMachineImpl stateMachine) {
         switch (stateMachine.getState()){
-            case ROLL_DICE, ROLL_DICE_AGAIN -> renderView(ROLL_DICE);
-            case SELECT_FIGURE -> renderView(SELECT_FIGURE);
-            case SELECT_MOVE_AMOUNT -> renderView(SELECT_MOVE_AMOUNT);
-            case MOVE_FORWARD_BACKWARD -> renderView(MOVE_FORWARD_BACKWARD);
-            case FORK_REACHED_LEFT_RIGHT_MIDDLE -> renderView(FORK_REACHED_LEFT_RIGHT_MIDDLE);
-            case FORK_REACHED_LEFT_RIGHT -> renderView(FORK_REACHED_LEFT_RIGHT);
+            case ROLL_DICE, SELECT_FIGURE, SELECT_MOVE_AMOUNT,
+                    MOVE_FORWARD_BACKWARD, FORK_REACHED_LEFT_RIGHT_MIDDLE,
+                    FORK_REACHED_LEFT_RIGHT -> renderView(stateMachine.getState());
+            case ROLL_DICE_AGAIN -> {
+                renderDiceRoll(stateMachine.getState());
+                renderView(stateMachine.getState());
+            }
+            case NEXT_PLAYER -> renderDiceRoll(stateMachine.getState());
         }
     }
 }
