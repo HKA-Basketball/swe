@@ -111,15 +111,15 @@ public class GameManagerImpl implements GameManager, Observer {
             player.setDiceValue(7);
         }
 
-        System.out.println(player.getDiceValue());
-
-        if(player.getPlayingFieldFigures().isEmpty() && player.getDiceRolls() <= 3) {
+        if(player.getPlayingFieldFigures().isEmpty()) {
             if(player.getDiceValue() == 7) {
                 stateMachine.setState(State.Value.START_FIELD);
-            } else {
+            } else if(player.getDiceRolls() < 3){
                 stateMachine.setState(State.Value.ROLL_DICE_AGAIN);
+            } else {
+                stateMachine.setState(State.Value.NEXT_PLAYER);
             }
-        } else if(!player.getPlayingFieldFigures().isEmpty() && player.getDiceRolls() <= 1) {
+        } else if(!player.getPlayingFieldFigures().isEmpty()) {
             if(player.getDiceValue() == 7 && !isStartBlocked()) {
                 stateMachine.setState(State.Value.START_FIELD);
             } else {
