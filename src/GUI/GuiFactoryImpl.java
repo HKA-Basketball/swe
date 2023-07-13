@@ -9,6 +9,7 @@ import StateMachine.port.State;
 
 import java.util.*;
 
+import static GUI.ConsoleColors.*;
 import static StateMachine.port.State.Value.*;
 
 class GuiFactoryImpl implements GuiFactory, Observer {
@@ -41,6 +42,8 @@ class GuiFactoryImpl implements GuiFactory, Observer {
         Player player = gameInfos.getPlayers().get(gameInfos.getCurrentPlayer());
         Figure figure = player.getFigures().get(player.getMovingFigure());
 
+        System.out.print(WHITE_UNDERLINED_BRIGHT);
+
         switch (renderTyp){
             case ROLL_DICE, FORK_REACHED_LEFT_RIGHT_MIDDLE, FORK_REACHED_LEFT_RIGHT ->
                     renderString(String.format(notifications.get(renderTyp), player));
@@ -49,40 +52,52 @@ class GuiFactoryImpl implements GuiFactory, Observer {
             case MOVE_FORWARD_BACKWARD ->
                     renderString(String.format(notifications.get(renderTyp), player, figure, player.getMoveValue()));
         }
+
+        System.out.print(RESET);
     }
 
     private void renderAction(State.Value renderTyp) {
+        System.out.print(WHITE_BRIGHT);
+
         switch (renderTyp){
             case ROLL_DICE, ROLL_DICE_AGAIN, START_FIELD, SELECT_MOVE_AMOUNT,
                     MOVE_FORWARD_BACKWARD, FORK_REACHED_LEFT_RIGHT, FORK_REACHED_LEFT_RIGHT_MIDDLE
                     -> renderString(actions.get(renderTyp));
             case SELECT_FIGURE -> renderString(String.format(actions.get(renderTyp), gameInfos.getStringListOfMovableFigures()));
         }
+
+        System.out.print(RESET);
     }
 
     private void renderGameInfo() {
-        gameInfos.getPlayers().forEach(sp -> {
-            System.out.print(String.format("\t%s:\t", sp));
+        gameInfos.getPlayers().forEach(player -> {
+            switch(player.toString()) {
+                case "RED" -> System.out.print(RED);
+                case "BLUE" -> System.out.print(BLUE);
+                case "YELLOW" -> System.out.print(YELLOW);
+            }
 
-            if (sp.getHomeFigures().size() == 5) {
-                System.out.println("0 von 5 Figuren im Spiel");
+            System.out.print(String.format("\t%s:\t", player));
+
+            if (player.getHomeFigures().size() == 5) {
+                System.out.print("0 von 5 Figuren im Spiel");
 
             } else {
-                System.out.print(String.format("%d von 5 Figuren im Spiel: ", sp.getPlayingFieldFigures().size()));
+                System.out.print(String.format("%d von 5 Figuren im Spiel: ", player.getPlayingFieldFigures().size()));
 
-                sp.getPlayingFieldFigures().forEach(figur -> {
-                    System.out.print(String.format("%s Feld %s;", figur, figur.getPosition().getID()));
+                player.getPlayingFieldFigures().forEach(figure -> {
+                    System.out.print(String.format("%s Feld %s;", figure, figure.getPosition().getID()));
                 });
-
-                System.out.println();
             }
+
+            System.out.println(RESET);
         });
     }
 
     public void renderDiceRoll(State.Value type) {
         if("x".equals(gameInfos.getInput()) || "y".equals(gameInfos.getInput())) {
             Player player = gameInfos.getPlayers().get(gameInfos.getCurrentPlayer());
-            renderString(String.valueOf(player.getDiceValue()));
+            renderString(GREEN_BRIGHT + String.valueOf(player.getDiceValue()) + RESET);
         }
     }
 
