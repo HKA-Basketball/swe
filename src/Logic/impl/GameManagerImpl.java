@@ -84,16 +84,6 @@ public class GameManagerImpl implements GameManager, Observer {
         stateMachine.setState(ROLL_DICE);
     }
 
-    public void startLogic() {
-        // Game Logic
-        playStepByStep();
-    }
-
-    private void playStepByStep() {
-        rollDice();
-        moveFigures();
-    }
-
     public int wuerfeln() {
         // nextInt is normally exclusive of the top value,
         // so add 1 to make it inclusive
