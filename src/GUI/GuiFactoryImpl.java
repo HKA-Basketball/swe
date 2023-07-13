@@ -1,5 +1,6 @@
 package GUI;
 
+import Logic.impl.Figure;
 import Logic.impl.Player;
 import Logic.port.GameManager;
 import StateMachine.impl.StateMachineImpl;
@@ -40,15 +41,16 @@ class GuiFactoryImpl implements GuiFactory, Observer {
     );
 
     private void renderNotification(State.Value renderTyp) {
+        Player player = gameInfos.getPlayers().get(gameInfos.getCurrentPlayer());
+        Figure figure = player.getFigures().get(player.getMovingFigure());
+
         switch (renderTyp){
-            case ROLL_DICE ->
-                    renderString(String.format(notifications.get(renderTyp), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer())));
+            case ROLL_DICE, FORK_REACHED_LEFT_RIGHT_MIDDLE, FORK_REACHED_LEFT_RIGHT ->
+                    renderString(String.format(notifications.get(renderTyp), player));
             case ROLL_DICE_AGAIN, SELECT_MOVE_AMOUNT, SELECT_FIGURE ->
-                    renderString(String.format(notifications.get(renderTyp), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getDiceValue()));
+                    renderString(String.format(notifications.get(renderTyp), player, player.getDiceValue()));
             case MOVE_FORWARD_BACKWARD ->
-                    renderString(String.format(notifications.get(renderTyp), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getFigures().get(gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getMovingFigure()), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer()).getMoveValue()));
-            case FORK_REACHED_LEFT_RIGHT_MIDDLE, FORK_REACHED_LEFT_RIGHT ->
-                    renderString(String.format(notifications.get(renderTyp), gameInfos.getPlayers().get(gameInfos.getCurrentPlayer())));
+                    renderString(String.format(notifications.get(renderTyp), player, figure, player.getMoveValue()));
         }
     }
 
