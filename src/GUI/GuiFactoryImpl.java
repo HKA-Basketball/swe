@@ -116,12 +116,12 @@ class GuiFactoryImpl implements GuiFactory, Observer {
     @Override
     public void update(StateMachineImpl stateMachine) {
         switch (stateMachine.getState()){
-            case ROLL_DICE, SELECT_FIGURE, SELECT_MOVE_AMOUNT,
-                    MOVE_FORWARD_BACKWARD, FORK_REACHED_LEFT_RIGHT_MIDDLE,
-                    FORK_REACHED_LEFT_RIGHT -> renderView(stateMachine.getState());
-            case ROLL_DICE_AGAIN -> {
-                renderDiceRoll(stateMachine.getState());
-                renderView(stateMachine.getState());
+            case ROLL_DICE, SELECT_MOVE_AMOUNT, MOVE_FORWARD_BACKWARD,
+                FORK_REACHED_LEFT_RIGHT_MIDDLE, FORK_REACHED_LEFT_RIGHT ->
+                    renderView(stateMachine.getState());
+            case ROLL_DICE_AGAIN, SELECT_FIGURE -> {
+                    renderDiceRoll(stateMachine.getState());
+                    renderView(stateMachine.getState());
             }
             case NEXT_PLAYER -> renderDiceRoll(stateMachine.getState());
         }
