@@ -123,18 +123,6 @@ public class GameManagerImpl implements GameManager, Observer {
         }
     }
 
-    private void moveFigures() {
-        Player player = players.get(currentPlayer);
-        if (!isStartBlocked() && player.getDiceValue() == 7) {
-            setFigureOnStart();
-
-        } else if (!player.getPlayingFieldFigures().isEmpty() && player.getDiceValue() > 0) {
-            chooseFigure();
-        }
-
-
-    }
-
     public List<Boolean> getStartStatus() {
         Player player = players.get(currentPlayer);
         List<Boolean> startStatus = new ArrayList<>(2);
