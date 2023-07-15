@@ -131,15 +131,20 @@ public class GameManagerImpl implements GameManager, Observer {
 
         for (Figure figure : player.getPlayingFieldFigures()) {
 
-            if (!startStatus.get(0)) {
-                startStatus.set(0, figure.getPosition().equals(player.getStartFields().get(0)));
+            // Check if the figure's position matches the start fields
+            if (figure.getPosition().equals(player.getStartFields().get(0))) {
+                // The figure's position matches the first start field
+                startStatus.set(0, true);
+
+            } else if (figure.getPosition().equals(player.getStartFields().get(1))) {
+                // The figure's position matches the second start field
+                startStatus.set(1, true);
             }
 
-            if (!startStatus.get(1)) {
-                startStatus.set(1, figure.getPosition().equals(player.getStartFields().get(1)));
+            // Break out of the loop if both start fields are occupied
+            if (startStatus.get(0) && startStatus.get(1)) {
+                break;
             }
-
-            if (startStatus.get(0) && startStatus.get(1)) break;
         }
 
         return startStatus;
