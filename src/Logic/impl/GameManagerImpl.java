@@ -123,6 +123,11 @@ public class GameManagerImpl implements GameManager, Observer {
         }
     }
 
+    /**
+     * Retrieves the start status of the player's figures.
+     * The start status indicates whether each start field is occupied by one of the player's figures.
+     * @return a list of boolean values representing the start status.
+     */
     public List<Boolean> getStartStatus() {
         Player player = players.get(currentPlayer);
         List<Boolean> startStatus = new ArrayList<>(2);
