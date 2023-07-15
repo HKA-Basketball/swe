@@ -167,10 +167,15 @@ public class GameManagerImpl implements GameManager, Observer {
         return startStatus.get(0) && startStatus.get(1);
     }
 
+    /**
+     * Places a figure on the start field for the current player, if available.
+     * Updates the figure's position and home status accordingly.
+     */
     private void setFigureOnStart() {
         Player player = players.get(currentPlayer);
         List<Boolean> startStatus = getStartStatus();
 
+        // Check if at least one start field is available for the player's figure
         if (!startStatus.get(0) || !startStatus.get(1)) {
             int figureID = getFigureID(player, player.getHomeFigures().get(0));
             Figure figure = player.getFigures().get(figureID);
@@ -181,6 +186,7 @@ public class GameManagerImpl implements GameManager, Observer {
             figure.setHome(false);
         }
 
+        // Update the game state
         stateMachine.setState(State.Value.NEXT_PLAYER);
     }
 
