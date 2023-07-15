@@ -85,6 +85,38 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     /**
+     * Retrieves the start status of the player's figures.
+     * The start status indicates whether each start field is occupied by one of the player's figures.
+     * @return a list of boolean values representing the start status.
+     */
+    public List<Boolean> getStartStatus() {
+        Player player = players.get(currentPlayer);
+        List<Boolean> startStatus = new ArrayList<>(2);
+        startStatus.add(false);
+        startStatus.add(false);
+
+        for (Figure figure : player.getPlayingFieldFigures()) {
+
+            // Check if the figure's position matches the start fields
+            if (figure.getPosition().equals(player.getStartFields().get(0))) {
+                // The figure's position matches the first start field
+                startStatus.set(0, true);
+
+            } else if (figure.getPosition().equals(player.getStartFields().get(1))) {
+                // The figure's position matches the second start field
+                startStatus.set(1, true);
+            }
+
+            // Break out of the loop if both start fields are occupied
+            if (startStatus.get(0) && startStatus.get(1)) {
+                break;
+            }
+        }
+
+        return startStatus;
+    }
+
+    /**
      * Checks if both start fields are blocked by the player's figures.
      * @return true if both start fields are occupied, false otherwise.
      */
@@ -133,38 +165,6 @@ public class GameManagerImpl implements GameManager, Observer {
             // The player cant roll anymore or has a movable figure
             stateMachine.setState(State.Value.NEXT_PLAYER);
         }
-    }
-
-    /**
-     * Retrieves the start status of the player's figures.
-     * The start status indicates whether each start field is occupied by one of the player's figures.
-     * @return a list of boolean values representing the start status.
-     */
-    public List<Boolean> getStartStatus() {
-        Player player = players.get(currentPlayer);
-        List<Boolean> startStatus = new ArrayList<>(2);
-        startStatus.add(false);
-        startStatus.add(false);
-
-        for (Figure figure : player.getPlayingFieldFigures()) {
-
-            // Check if the figure's position matches the start fields
-            if (figure.getPosition().equals(player.getStartFields().get(0))) {
-                // The figure's position matches the first start field
-                startStatus.set(0, true);
-
-            } else if (figure.getPosition().equals(player.getStartFields().get(1))) {
-                // The figure's position matches the second start field
-                startStatus.set(1, true);
-            }
-
-            // Break out of the loop if both start fields are occupied
-            if (startStatus.get(0) && startStatus.get(1)) {
-                break;
-            }
-        }
-
-        return startStatus;
     }
 
     /**
