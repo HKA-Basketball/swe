@@ -85,6 +85,18 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     /**
+     * Checks if both start fields are blocked by the player's figures.
+     * @return true if both start fields are occupied, false otherwise.
+     */
+    public boolean isStartBlocked() {
+        // Get the start status of the player's figures
+        List<Boolean> startStatus = getStartStatus();
+
+        // Check if both start fields are occupied
+        return startStatus.get(0) && startStatus.get(1);
+    }
+
+    /**
      * Rolls the dice for the current player
      * and updates the game state accordingly.
      */
@@ -153,18 +165,6 @@ public class GameManagerImpl implements GameManager, Observer {
         }
 
         return startStatus;
-    }
-
-    /**
-     * Checks if both start fields are blocked by the player's figures.
-     * @return true if both start fields are occupied, false otherwise.
-     */
-    public boolean isStartBlocked() {
-        // Get the start status of the player's figures
-        List<Boolean> startStatus = getStartStatus();
-
-        // Check if both start fields are occupied
-        return startStatus.get(0) && startStatus.get(1);
     }
 
     /**
