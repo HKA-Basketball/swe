@@ -92,11 +92,17 @@ public class GameManagerImpl implements GameManager, Observer {
         return sum;
     }
 
+    /**
+     * Rolls the dice for the current player
+     * and updates the game state accordingly.
+     */
     private void rollDice() {
         Player player = players.get(currentPlayer);
         player.setDiceRolls(player.getDiceRolls()+1);
 
         player.setDiceValue(wuerfeln());
+
+        // Allow forcing a dice roll of 7 by pressing 'y'
         if ("y".equals(input)) {
             player.setDiceValue(7);
         }
