@@ -102,21 +102,23 @@ public class GameManagerImpl implements GameManager, Observer {
             player.setDiceValue(7);
         }
 
-        if(player.getPlayingFieldFigures().isEmpty()) {
-            if(player.getDiceValue() == 7) {
-                stateMachine.setState(State.Value.START_FIELD);
-            } else if(player.getDiceRolls() < 3){
-                stateMachine.setState(State.Value.ROLL_DICE_AGAIN);
-            } else {
-                stateMachine.setState(State.Value.NEXT_PLAYER);
-            }
-        } else if(!player.getPlayingFieldFigures().isEmpty()) {
-            if(player.getDiceValue() == 7 && !isStartBlocked()) {
-                stateMachine.setState(State.Value.START_FIELD);
-            } else {
-                stateMachine.setState(State.Value.SELECT_FIGURE);
-            }
+        // Update the game state
+        boolean playingFieldIsEmpty = player.getPlayingFieldFigures().isEmpty();
+
+        if (player.getDiceValue() == 7 && (playingFieldIsEmpty || !isStartBlocked())) {
+            // The player has rolled a 7 and is able to place a figure on start
+            stateMachine.setState(State.Value.START_FIELD);
+
+        } else if (playingFieldIsEmpty && player.getDiceRolls() < 3) {
+            // The player has no movable figure and is able to roll again
+            stateMachine.setState(State.Value.ROLL_DICE_AGAIN);
+
+        } else if (!playingFieldIsEmpty) {
+            // The player has a figure to move it by the number that has been rolled
+            stateMachine.setState(State.Value.SELECT_FIGURE);
+
         } else {
+            // The player cant roll anymore or has a movable figure
             stateMachine.setState(State.Value.NEXT_PLAYER);
         }
     }
