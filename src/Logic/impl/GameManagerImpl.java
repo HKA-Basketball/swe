@@ -155,9 +155,16 @@ public class GameManagerImpl implements GameManager, Observer {
         return startStatus;
     }
 
+    /**
+     * Checks if both start fields are blocked by the player's figures.
+     * @return true if both start fields are occupied, false otherwise.
+     */
     public boolean isStartBlocked() {
+        // Get the start status of the player's figures
         List<Boolean> startStatus = getStartStatus();
-        return (startStatus.get(0) && startStatus.get(1));
+
+        // Check if both start fields are occupied
+        return startStatus.get(0) && startStatus.get(1);
     }
 
     private void setFigureOnStart() {
