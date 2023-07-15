@@ -212,7 +212,7 @@ public class GameManagerImpl implements GameManager, Observer {
         int movingDistance = Integer.parseInt(input);
         player.setMoveValue(movingDistance);
 
-        players.get(currentPlayer).setDiceValue(players.get(currentPlayer).getDiceValue() - movingDistance);
+        player.setDiceValue(player.getDiceValue() - movingDistance);
 
         stateMachine.setState(MOVE);
     }
