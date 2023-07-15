@@ -173,15 +173,12 @@ public class GameManagerImpl implements GameManager, Observer {
 
         if (!startStatus.get(0) || !startStatus.get(1)) {
             int figureID = getFigureID(player, player.getHomeFigures().get(0));
-            if (!startStatus.get(0)) {
-                this.players.get(currentPlayer).getFigures().get(figureID)
-                        .setPosition(this.players.get(currentPlayer).getStartFields().get(0));
-                this.players.get(currentPlayer).getFigures().get(figureID).setHome(false);
-            } else if (!startStatus.get(1)) {
-                this.players.get(currentPlayer).getFigures().get(figureID)
-                        .setPosition(this.players.get(currentPlayer).getStartFields().get(1));
-                this.players.get(currentPlayer).getFigures().get(figureID).setHome(false);
-            }
+            Figure figure = player.getFigures().get(figureID);
+
+            // Determine the index of the start field to set the figure's position
+            int index = startStatus.get(0) ? 1 : 0;
+            figure.setPosition(player.getStartFields().get(index));
+            figure.setHome(false);
         }
 
         stateMachine.setState(State.Value.NEXT_PLAYER);
