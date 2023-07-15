@@ -84,14 +84,6 @@ public class GameManagerImpl implements GameManager, Observer {
         stateMachine.setState(ROLL_DICE);
     }
 
-    public int wuerfeln() {
-        // nextInt is normally exclusive of the top value,
-        // so add 1 to make it inclusive
-        int sum = ThreadLocalRandom.current().nextInt(1, 7);
-        sum += ThreadLocalRandom.current().nextInt(1, 7);
-        return sum;
-    }
-
     /**
      * Rolls the dice for the current player
      * and updates the game state accordingly.
@@ -100,7 +92,10 @@ public class GameManagerImpl implements GameManager, Observer {
         Player player = players.get(currentPlayer);
         player.setDiceRolls(player.getDiceRolls()+1);
 
-        player.setDiceValue(wuerfeln());
+        // Roll the dice by generating two random numbers between 1 and 6 (inclusive)
+        int sum = ThreadLocalRandom.current().nextInt(1, 7);
+        sum += ThreadLocalRandom.current().nextInt(1, 7);
+        player.setDiceValue(sum);
 
         // Allow forcing a dice roll of 7 by pressing 'y'
         if ("y".equals(input)) {
