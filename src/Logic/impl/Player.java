@@ -100,14 +100,6 @@ public class Player {
         this.diceValue -= value;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
     public int getMovingFigure() {
         return movingFigure;
     }
