@@ -16,7 +16,7 @@ import static StateMachine.port.State.Value.*;
 public class GameManagerImpl implements GameManager, Observer {
 
 
-    private StateMachineFactory stateMachine = StateMachineFactory.FACTORY;
+    private final StateMachineFactory stateMachine = StateMachineFactory.FACTORY;
     private State.Value nextState = NONE;
     private String input;
     private int currentPlayer = 0;
