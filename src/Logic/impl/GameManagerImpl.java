@@ -20,7 +20,7 @@ public class GameManagerImpl implements GameManager, Observer {
     private State.Value nextState = NONE;
     private String input;
     private int currentPlayer = 0;
-    private List<Player> players = new ArrayList<>(3);
+    private final List<Player> players = new ArrayList<>(3);
 
     public GameManagerImpl() {
         createPlayer();
