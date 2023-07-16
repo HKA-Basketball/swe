@@ -220,17 +220,25 @@ public class GameManagerImpl implements GameManager, Observer {
         }
     }
 
+    /**
+     * Selects the move amount for the current player's figure.
+     * Sets the move value for the current player's figure based on the user's input.
+     * Reduces the player's dice value by the selected move amount.
+     * Sets the state to MOVE.
+     */
     public void selectMoveAmount() {
         Player player = players.get(currentPlayer);
         Figure figure = player.getFigures().get(player.getMovingFigure());
+
+        // Set the previous position of the figure to null
         figure.setPreviousPos(null);
 
+        // Parse the user's input as the moving distance
         int movingDistance = Integer.parseInt(input);
         player.setMoveValue(movingDistance);
         player.reduceDiceValue(movingDistance);
 
-        player.setDiceValue(player.getDiceValue() - movingDistance);
-
+        // Update the game state
         stateMachine.setState(MOVE);
     }
 
