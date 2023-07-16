@@ -22,6 +22,10 @@ public class GameManagerImpl implements GameManager, Observer {
     private int currentPlayer = 0;
     private List<Player> players = new ArrayList<>(3);
 
+    public GameManagerImpl() {
+        createPlayer();
+    }
+
     public List<Player> getPlayers() {
         return players;
     }
@@ -62,9 +66,10 @@ public class GameManagerImpl implements GameManager, Observer {
         return -1;
     }
 
-    public GameManagerImpl() {
-        // Init
-        creatPlayer();
+    private void createPlayer() {
+        players.add(new Player("Player1", Player.Color.RED, PlayingField.getStartingFields().get(Player.Color.RED)));
+        players.add(new Player("Player2", Player.Color.BLUE, PlayingField.getStartingFields().get(Player.Color.BLUE)));
+        players.add(new Player("Player3", Player.Color.YELLOW, PlayingField.getStartingFields().get(Player.Color.YELLOW)));
     }
 
     public void nextPlayer() {
@@ -346,12 +351,6 @@ public class GameManagerImpl implements GameManager, Observer {
         }
 
         stateMachine.setState(nextState);
-    }
-
-    private void creatPlayer() {
-        players.add(new Player("Player1", Player.Color.RED, PlayingField.getStartingFields().get(Player.Color.RED)));
-        players.add(new Player("Player2", Player.Color.BLUE, PlayingField.getStartingFields().get(Player.Color.BLUE)));
-        players.add(new Player("Player3", Player.Color.YELLOW, PlayingField.getStartingFields().get(Player.Color.YELLOW)));
     }
 
     @Override
