@@ -10,10 +10,10 @@ public class Player {
         BLUE("Blau"),
         YELLOW("Gelb");
 
-        private final String colorName;
+        private final String name;
 
-        Color(String colorName) {
-            this.colorName = colorName;
+        Color(String name) {
+            this.name = name;
         }
     }
 
