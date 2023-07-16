@@ -23,9 +23,8 @@ public class Player {
     private int diceValue;
     private int moveValue;
     private int movingFigure;
-    private boolean reachedFork;
-    private List<Figure> figures = new ArrayList<>(5);
-    private List<Start> startFields = new ArrayList<>(2);
+    private final List<Figure> figures = new ArrayList<>(5);
+    private final List<Start> startFields = new ArrayList<>(2);
 
     @Override
     public String toString() {
