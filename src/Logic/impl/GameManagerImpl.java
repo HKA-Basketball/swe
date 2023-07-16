@@ -91,7 +91,7 @@ public class GameManagerImpl implements GameManager, Observer {
         // Move to the next player, wrapping around if necessary
         currentPlayer = (currentPlayer + 1) % players.size();
 
-        // Set the state to ROLL_DICE
+        // Update the game state
         stateMachine.setState(ROLL_DICE);
     }
 
