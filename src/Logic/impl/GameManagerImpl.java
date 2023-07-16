@@ -203,15 +203,12 @@ public class GameManagerImpl implements GameManager, Observer {
 
     public void chooseFigure() {
         Player player = players.get(currentPlayer);
+        player.setMovingFigure(getFigureIDByString(player, input));
 
-        String figureName = input;
-        int figureID = getFigureIDByString(player, figureName);
-        player.setMovingFigure(figureID);
-
-        if (players.get(currentPlayer).getDiceValue() > 0) {
+        if (player.getDiceValue() > 0) {
             stateMachine.setState(State.Value.SELECT_MOVE_AMOUNT);
         } else {
-            stateMachine.setState(NEXT_PLAYER);
+            stateMachine.setState(State.Value.NEXT_PLAYER);
         }
     }
 
