@@ -21,7 +21,6 @@ public class StateMachineFactoryImpl implements StateMachineFactory, Subject, St
     @Override
     public void setState(State.Value state) {
         this.stateMachine.setState(state);
-        notifyObservers();
     }
 
     @Override

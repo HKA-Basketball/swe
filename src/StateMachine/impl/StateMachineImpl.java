@@ -20,7 +20,6 @@ public class StateMachineImpl implements StateMachine, Subject {
     @Override
     public void setState(State.Value state) {
         currentState = state;
-        //notifyObservers();
     }
 
     @Override
