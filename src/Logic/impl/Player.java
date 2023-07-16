@@ -32,7 +32,7 @@ public class Player {
         return color.name();
     }
 
-    public Player(String name, Color color, List<Start> startFeld) {
+    public Player(String name, Color color, List<Start> startFields) {
         this.name = name;
         this.color = color;
 
@@ -42,8 +42,8 @@ public class Player {
             figures.add(figure);
         }
 
-        startFields.add(startFeld.get(0));
-        startFields.add(startFeld.get(1));
+        this.startFields.add(startFields.get(0));
+        this.startFields.add(startFields.get(1));
 
         // Outer cube
         // Player Rot: Start Id = 1
