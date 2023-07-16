@@ -72,15 +72,26 @@ public class GameManagerImpl implements GameManager, Observer {
         players.add(new Player("Player3", Player.Color.YELLOW, PlayingField.getStartingFields().get(Player.Color.YELLOW)));
     }
 
+    /**
+     * Advances the game to the next player.
+     * Resets the dice rolls for the current player.
+     * Clears the previous positions of all figures belonging to the current player.
+     * Updates the currentPlayer index to point to the next player in the list, wrapping around if necessary.
+     * Updates the state to ROLL_DICE.
+     */
     public void nextPlayer() {
         Player player = players.get(currentPlayer);
         player.setDiceRolls(0);
 
-        for (Figure f : player.getFigures()) {
-            f.setPreviousPos(null);
+        // Clear the previous positions of all figures belonging to the current player
+        for (Figure figure : player.getFigures()) {
+            figure.setPreviousPos(null);
         }
 
+        // Move to the next player, wrapping around if necessary
         currentPlayer = (currentPlayer + 1) % players.size();
+
+        // Set the state to ROLL_DICE
         stateMachine.setState(ROLL_DICE);
     }
 
