@@ -201,10 +201,18 @@ public class GameManagerImpl implements GameManager, Observer {
         stateMachine.setState(State.Value.NEXT_PLAYER);
     }
 
+    /**
+     * Chooses a figure for the current player based on the user's input
+     * and sets the chosen figure as the moving figure for the player.
+     * Determines the next state based on the player's dice value.
+     */
     public void chooseFigure() {
         Player player = players.get(currentPlayer);
+
+        // Set the moving figure for the player based on the user's input
         player.setMovingFigure(getFigureIDByString(player, input));
 
+        // Check the player's dice value to determine the next state
         if (player.getDiceValue() > 0) {
             stateMachine.setState(State.Value.SELECT_MOVE_AMOUNT);
         } else {
