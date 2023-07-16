@@ -96,6 +96,10 @@ public class Player {
         this.diceValue = diceValue;
     }
 
+    public void reduceDiceValue(int value) {
+        this.diceValue -= value;
+    }
+
     public void setColor(Color color) {
         this.color = color;
     }
