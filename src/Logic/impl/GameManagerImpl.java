@@ -73,7 +73,6 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     public void nextPlayer() {
-
         Player player = players.get(currentPlayer);
         player.setDiceRolls(0);
 
@@ -81,10 +80,7 @@ public class GameManagerImpl implements GameManager, Observer {
             f.setPreviousPos(null);
         }
 
-        currentPlayer++;
-        if (currentPlayer >= players.size()) {
-            currentPlayer = 0;
-        }
+        currentPlayer = (currentPlayer + 1) % players.size();
         stateMachine.setState(ROLL_DICE);
     }
 
