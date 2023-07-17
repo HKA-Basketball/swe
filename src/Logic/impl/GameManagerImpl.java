@@ -22,7 +22,7 @@ public class GameManagerImpl implements GameManager, Observer {
     private final List<Player> players = new ArrayList<>(3);
 
     public GameManagerImpl() {
-        createPlayer();
+        createPlayers();
     }
 
     public List<Player> getPlayers() {
@@ -65,7 +65,7 @@ public class GameManagerImpl implements GameManager, Observer {
         return -1;
     }
 
-    private void createPlayer() {
+    private void createPlayers() {
         players.add(new Player("Player1", Player.Color.RED, PlayingField.getStartingFields().get(Player.Color.RED)));
         players.add(new Player("Player2", Player.Color.BLUE, PlayingField.getStartingFields().get(Player.Color.BLUE)));
         players.add(new Player("Player3", Player.Color.YELLOW, PlayingField.getStartingFields().get(Player.Color.YELLOW)));
