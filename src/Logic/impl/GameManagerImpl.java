@@ -17,7 +17,6 @@ public class GameManagerImpl implements GameManager, Observer {
 
 
     private final StateMachineFactory stateMachine = StateMachineFactory.FACTORY;
-    private State.Value nextState = NONE;
     private String input;
     private int currentPlayer = 0;
     private final List<Player> players = new ArrayList<>(3);
@@ -260,13 +259,7 @@ public class GameManagerImpl implements GameManager, Observer {
                     stateMachine.setState(FORK_REACHED_LEFT_RIGHT_MIDDLE);
                 }
             }
-        }
-        else if(player.getDiceValue() > 0) {
-            nextState = SELECT_FIGURE;
-            stateMachine.setState(CHECK_COLLISION);
-
         } else {
-            nextState = NEXT_PLAYER;
             stateMachine.setState(CHECK_COLLISION);
         }
     }
@@ -371,7 +364,11 @@ public class GameManagerImpl implements GameManager, Observer {
             }
         }
 
-        stateMachine.setState(nextState);
+        if(player.getDiceValue() > 0) {
+            stateMachine.setState(SELECT_FIGURE);
+        } else {
+            stateMachine.setState(NEXT_PLAYER);
+        }
     }
 
     @Override
