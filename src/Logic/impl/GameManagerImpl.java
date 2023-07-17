@@ -18,8 +18,8 @@ public class GameManagerImpl implements GameManager, Observer {
 
     private final StateMachineFactory stateMachine = StateMachineFactory.FACTORY;
     private String input;
-    private int currentPlayer = 0;
     private final List<Player> players = new ArrayList<>(3);
+    private Player currentPlayer;
 
     public GameManagerImpl() {
         createPlayers();
@@ -29,7 +29,7 @@ public class GameManagerImpl implements GameManager, Observer {
         return players;
     }
 
-    public int getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
@@ -50,9 +50,8 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     public List<String> getStringListOfMovableFigures() {
-        return Arrays.asList(players.get(currentPlayer).getPlayingFieldFigures()
-                .stream().map(Figure::toString).collect(Collectors.joining(";")).split(";"));
-
+        return Arrays.asList(currentPlayer.getPlayingFieldFigures().stream().map(Figure::toString)
+                .collect(Collectors.joining(";")).split(";"));
     }
 
     public int getFigureIDByString(Player player, String figureName) {
@@ -69,6 +68,7 @@ public class GameManagerImpl implements GameManager, Observer {
         players.add(new Player("Player1", Player.Color.RED, PlayingField.getStartingFields().get(Player.Color.RED)));
         players.add(new Player("Player2", Player.Color.BLUE, PlayingField.getStartingFields().get(Player.Color.BLUE)));
         players.add(new Player("Player3", Player.Color.YELLOW, PlayingField.getStartingFields().get(Player.Color.YELLOW)));
+        currentPlayer = players.get(0);
     }
 
     /**
@@ -79,16 +79,17 @@ public class GameManagerImpl implements GameManager, Observer {
      * Updates the state to ROLL_DICE.
      */
     public void nextPlayer() {
-        Player player = players.get(currentPlayer);
-        player.setDiceRolls(0);
+        currentPlayer.setDiceRolls(0);
 
         // Clear the previous positions of all figures belonging to the current player
-        for (Figure figure : player.getFigures()) {
+        for (Figure figure : currentPlayer.getFigures()) {
             figure.setPreviousPos(null);
         }
 
         // Move to the next player, wrapping around if necessary
-        currentPlayer = (currentPlayer + 1) % players.size();
+        int currentPlayerID = players.indexOf(currentPlayer);
+        currentPlayerID = (currentPlayerID + 1) % players.size();
+        currentPlayer = players.get(currentPlayerID);
 
         // Update the game state
         stateMachine.setState(ROLL_DICE);
@@ -100,19 +101,18 @@ public class GameManagerImpl implements GameManager, Observer {
      * @return a list of boolean values representing the start status.
      */
     public List<Boolean> getStartStatus() {
-        Player player = players.get(currentPlayer);
         List<Boolean> startStatus = new ArrayList<>(2);
         startStatus.add(false);
         startStatus.add(false);
 
-        for (Figure figure : player.getPlayingFieldFigures()) {
+        for (Figure figure : currentPlayer.getPlayingFieldFigures()) {
 
             // Check if the figure's position matches the start fields
-            if (figure.getPosition().equals(player.getStartFields().get(0))) {
+            if (figure.getPosition().equals(currentPlayer.getStartFields().get(0))) {
                 // The figure's position matches the first start field
                 startStatus.set(0, true);
 
-            } else if (figure.getPosition().equals(player.getStartFields().get(1))) {
+            } else if (figure.getPosition().equals(currentPlayer.getStartFields().get(1))) {
                 // The figure's position matches the second start field
                 startStatus.set(1, true);
             }
@@ -143,27 +143,26 @@ public class GameManagerImpl implements GameManager, Observer {
      * and updates the game state accordingly.
      */
     private void rollDice() {
-        Player player = players.get(currentPlayer);
-        player.setDiceRolls(player.getDiceRolls()+1);
+        currentPlayer.setDiceRolls(currentPlayer.getDiceRolls()+1);
 
         // Roll the dice by generating two random numbers between 1 and 6 (inclusive)
         int sum = ThreadLocalRandom.current().nextInt(1, 7);
         sum += ThreadLocalRandom.current().nextInt(1, 7);
-        player.setDiceValue(sum);
+        currentPlayer.setDiceValue(sum);
 
         // Allow forcing a dice roll of 7 by pressing 'y'
         if ("y".equals(input)) {
-            player.setDiceValue(7);
+            currentPlayer.setDiceValue(7);
         }
 
         // Update the game state
-        boolean playingFieldIsEmpty = player.getPlayingFieldFigures().isEmpty();
+        boolean playingFieldIsEmpty = currentPlayer.getPlayingFieldFigures().isEmpty();
 
-        if (player.getDiceValue() == 7 && (playingFieldIsEmpty || !isStartBlocked())) {
+        if (currentPlayer.getDiceValue() == 7 && (playingFieldIsEmpty || !isStartBlocked())) {
             // The player has rolled a 7 and is able to place a figure on start
             stateMachine.setState(State.Value.START_FIELD);
 
-        } else if (playingFieldIsEmpty && player.getDiceRolls() < 3) {
+        } else if (playingFieldIsEmpty && currentPlayer.getDiceRolls() < 3) {
             // The player has no movable figure and is able to roll again
             stateMachine.setState(State.Value.ROLL_DICE_AGAIN);
 
@@ -182,17 +181,16 @@ public class GameManagerImpl implements GameManager, Observer {
      * Updates the figure's position and home status accordingly.
      */
     private void setFigureOnStart() {
-        Player player = players.get(currentPlayer);
         List<Boolean> startStatus = getStartStatus();
 
         // Check if at least one start field is available for the player's figure
         if (!startStatus.get(0) || !startStatus.get(1)) {
-            int figureID = getFigureID(player, player.getHomeFigures().get(0));
-            Figure figure = player.getFigures().get(figureID);
+            int figureID = getFigureID(currentPlayer, currentPlayer.getHomeFigures().get(0));
+            Figure figure = currentPlayer.getFigures().get(figureID);
 
             // Determine the index of the start field to set the figure's position
             int index = startStatus.get(0) ? 1 : 0;
-            figure.setPosition(player.getStartFields().get(index));
+            figure.setPosition(currentPlayer.getStartFields().get(index));
             figure.setHome(false);
         }
 
@@ -206,13 +204,11 @@ public class GameManagerImpl implements GameManager, Observer {
      * Determines the next state based on the player's dice value.
      */
     public void chooseFigure() {
-        Player player = players.get(currentPlayer);
-
         // Set the moving figure for the player based on the user's input
-        player.setMovingFigure(getFigureIDByString(player, input));
+        currentPlayer.setMovingFigure(getFigureIDByString(currentPlayer, input));
 
         // Check the player's dice value to determine the next state
-        if (player.getDiceValue() > 0) {
+        if (currentPlayer.getDiceValue() > 0) {
             stateMachine.setState(State.Value.SELECT_MOVE_AMOUNT);
         } else {
             stateMachine.setState(State.Value.NEXT_PLAYER);
@@ -226,26 +222,24 @@ public class GameManagerImpl implements GameManager, Observer {
      * Sets the state to MOVE.
      */
     public void selectMoveAmount() {
-        Player player = players.get(currentPlayer);
-        Figure figure = player.getFigures().get(player.getMovingFigure());
+        Figure figure = currentPlayer.getFigures().get(currentPlayer.getMovingFigure());
 
         // Set the previous position of the figure to null
         figure.setPreviousPos(null);
 
         // Parse the user's input as the moving distance
         int movingDistance = Integer.parseInt(input);
-        player.setMoveValue(movingDistance);
-        player.reduceDiceValue(movingDistance);
+        currentPlayer.setMoveValue(movingDistance);
+        currentPlayer.reduceDiceValue(movingDistance);
 
         // Update the game state
         stateMachine.setState(MOVE);
     }
 
     public void move() {
-        Player player = players.get(currentPlayer);
-        Figure figure = player.getFigures().get(player.getMovingFigure());
+        Figure figure = currentPlayer.getFigures().get(currentPlayer.getMovingFigure());
 
-        if (player.getMoveValue() > 0) {
+        if (currentPlayer.getMoveValue() > 0) {
             if(figure.getPreviousPos() != null) {
                 if(figure.getPosition() instanceof Path) {
                     stateMachine.setState(MOVE_DIRECTION);
@@ -265,8 +259,7 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     public void startMoveDirection() {
-        Player player = players.get(currentPlayer);
-        Figure figure = player.getFigures().get(player.getMovingFigure());
+        Figure figure = currentPlayer.getFigures().get(currentPlayer.getMovingFigure());
         Field currentPosition = figure.getPosition();
 
         if (currentPosition instanceof Path path) {
@@ -277,14 +270,13 @@ public class GameManagerImpl implements GameManager, Observer {
             }
         }
 
-        player.setMoveValue(player.getMoveValue()-1);
+        currentPlayer.setMoveValue(currentPlayer.getMoveValue()-1);
         figure.setPreviousPos(currentPosition);
         stateMachine.setState(MOVE);
     }
 
     public void startMoveFork() {
-        Player player = players.get(currentPlayer);
-        Figure figure = player.getFigures().get(player.getMovingFigure());
+        Figure figure = currentPlayer.getFigures().get(currentPlayer.getMovingFigure());
         Field currentPosition = figure.getPosition();
 
         if (currentPosition instanceof Fork fork) {
@@ -297,14 +289,13 @@ public class GameManagerImpl implements GameManager, Observer {
             }
         }
 
-        player.setMoveValue(player.getMoveValue()-1);
+        currentPlayer.setMoveValue(currentPlayer.getMoveValue()-1);
         figure.setPreviousPos(currentPosition);
         stateMachine.setState(MOVE);
     }
 
     public void moveDirection() {
-        Player player = players.get(currentPlayer);
-        Figure figure = player.getFigures().get(player.getMovingFigure());
+        Figure figure = currentPlayer.getFigures().get(currentPlayer.getMovingFigure());
         Field currentPosition = figure.getPosition();
 
         if (currentPosition instanceof Path path) {
@@ -316,14 +307,13 @@ public class GameManagerImpl implements GameManager, Observer {
 
         }
 
-        player.setMoveValue(player.getMoveValue()-1);
+        currentPlayer.setMoveValue(currentPlayer.getMoveValue()-1);
         figure.setPreviousPos(currentPosition);
         stateMachine.setState(MOVE);
     }
 
     public void moveFork() {
-        Player player = players.get(currentPlayer);
-        Figure figure = player.getFigures().get(player.getMovingFigure());
+        Figure figure = currentPlayer.getFigures().get(currentPlayer.getMovingFigure());
         Field currentPosition = figure.getPosition();
 
         if (currentPosition instanceof Fork fork) {
@@ -342,18 +332,17 @@ public class GameManagerImpl implements GameManager, Observer {
             }
         }
 
-        player.setMoveValue(player.getMoveValue()-1);
+        currentPlayer.setMoveValue(currentPlayer.getMoveValue()-1);
         figure.setPreviousPos(currentPosition);
         stateMachine.setState(MOVE);
     }
 
     public void checkForCollision() {
-        Player player = players.get(currentPlayer);
-        Figure figure = player.getFigures().get(player.getMovingFigure());
+        Figure figure = currentPlayer.getFigures().get(currentPlayer.getMovingFigure());
 
         for (Player enemyPlayer : this.players) {
             int enemyPlayerID = getPlayerID(enemyPlayer);
-            if (currentPlayer == enemyPlayerID) continue;
+            if (currentPlayer == enemyPlayer) continue;
 
             for (Figure enemyFigure : enemyPlayer.getPlayingFieldFigures()) {
                 int enemyFigureID = getFigureID(enemyPlayer, enemyFigure);
@@ -364,7 +353,7 @@ public class GameManagerImpl implements GameManager, Observer {
             }
         }
 
-        if(player.getDiceValue() > 0) {
+        if(currentPlayer.getDiceValue() > 0) {
             stateMachine.setState(SELECT_FIGURE);
         } else {
             stateMachine.setState(NEXT_PLAYER);

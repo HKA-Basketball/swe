@@ -39,7 +39,7 @@ class GuiFactoryImpl implements GuiFactory, Observer {
     );
 
     private void renderNotification(State.Value renderTyp) {
-        Player player = gameInfos.getPlayers().get(gameInfos.getCurrentPlayer());
+        Player player = gameInfos.getCurrentPlayer();
         Figure figure = player.getFigures().get(player.getMovingFigure());
 
         System.out.print(WHITE_UNDERLINED_BRIGHT);
@@ -96,8 +96,7 @@ class GuiFactoryImpl implements GuiFactory, Observer {
 
     public void renderDiceRoll(State.Value type) {
         if("x".equals(gameInfos.getInput()) || "y".equals(gameInfos.getInput())) {
-            Player player = gameInfos.getPlayers().get(gameInfos.getCurrentPlayer());
-            renderString(GREEN_BRIGHT + String.valueOf(player.getDiceValue()) + RESET);
+            renderString(GREEN_BRIGHT + gameInfos.getCurrentPlayer().getDiceValue() + RESET);
         }
     }
 

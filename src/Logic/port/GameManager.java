@@ -9,7 +9,7 @@ public interface GameManager {
     GameManager FACTORY = new GameManagerImpl();
 
     List<Player> getPlayers();
-    int getCurrentPlayer();
+    Player getCurrentPlayer();
     List<String> getStringListOfMovableFigures();
 
     void setInput(String input);
