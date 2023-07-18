@@ -41,23 +41,16 @@ public class GameManagerImpl implements GameManager, Observer {
         return this.input;
     }
 
-    public int getPlayerID(Player player) {
-        return this.players.indexOf(player);
-    }
-
-    public int getFigureID(Player player, Figure figure) {
-        return this.players.get(getPlayerID(player)).getFigures().indexOf(figure);
-    }
-
     public List<String> getStringListOfMovableFigures() {
         return Arrays.asList(currentPlayer.getPlayingFieldFigures().stream().map(Figure::toString)
                 .collect(Collectors.joining(";")).split(";"));
     }
 
     public int getFigureIDByString(Player player, String figureName) {
-        for (Figure figure : player.getFigures()) {
+        for (int i = 0; i < player.getFigures().size(); i++) {
+            Figure figure = player.getFigures().get(i);
             if (figure.getId().equals(figureName)) {
-                return getFigureID(player, figure);
+                return i;
             }
         }
 
@@ -185,8 +178,7 @@ public class GameManagerImpl implements GameManager, Observer {
 
         // Check if at least one start field is available for the player's figure
         if (!startStatus.get(0) || !startStatus.get(1)) {
-            int figureID = getFigureID(currentPlayer, currentPlayer.getHomeFigures().get(0));
-            Figure figure = currentPlayer.getFigures().get(figureID);
+            Figure figure = currentPlayer.getHomeFigures().get(0);
 
             // Determine the index of the start field to set the figure's position
             int index = startStatus.get(0) ? 1 : 0;
