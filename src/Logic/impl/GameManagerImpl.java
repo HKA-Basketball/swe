@@ -343,21 +343,19 @@ public class GameManagerImpl implements GameManager, Observer {
 
     public void checkForCollision() {
         Figure figure = currentPlayer.getFigures().get(currentPlayer.getMovingFigure());
+        Field currentPosition = figure.getPosition();
 
         for (Player enemyPlayer : this.players) {
-            int enemyPlayerID = getPlayerID(enemyPlayer);
             if (currentPlayer == enemyPlayer) continue;
 
             for (Figure enemyFigure : enemyPlayer.getPlayingFieldFigures()) {
-                int enemyFigureID = getFigureID(enemyPlayer, enemyFigure);
-
-                if (figure.getPosition().equals(enemyFigure.getPosition())) {
-                    players.get(enemyPlayerID).getFigures().get(enemyFigureID).setHome(true);
+                if (currentPosition.equals(enemyFigure.getPosition())) {
+                    enemyFigure.setHome(true);
                 }
             }
         }
 
-        if(currentPlayer.getDiceValue() > 0) {
+        if (currentPlayer.getDiceValue() > 0) {
             stateMachine.setState(SELECT_FIGURE);
         } else {
             stateMachine.setState(NEXT_PLAYER);
