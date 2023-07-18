@@ -238,20 +238,14 @@ public class GameManagerImpl implements GameManager, Observer {
 
     public void move() {
         Figure figure = currentPlayer.getFigures().get(currentPlayer.getMovingFigure());
+        boolean isPreviousPositionNull = figure.getPreviousPos() == null;
+        boolean isPositionPath = figure.getPosition() instanceof Path;
 
         if (currentPlayer.getMoveValue() > 0) {
-            if(figure.getPreviousPos() != null) {
-                if(figure.getPosition() instanceof Path) {
-                    stateMachine.setState(MOVE_DIRECTION);
-                } else {
-                    stateMachine.setState(FORK_REACHED_LEFT_RIGHT);
-                }
+            if (isPreviousPositionNull) {
+                stateMachine.setState(isPositionPath ? MOVE_FORWARD_BACKWARD : FORK_REACHED_LEFT_RIGHT_MIDDLE);
             } else {
-                if(figure.getPosition() instanceof Path) {
-                    stateMachine.setState(MOVE_FORWARD_BACKWARD);
-                } else {
-                    stateMachine.setState(FORK_REACHED_LEFT_RIGHT_MIDDLE);
-                }
+                stateMachine.setState(isPositionPath ? MOVE_DIRECTION : FORK_REACHED_LEFT_RIGHT);
             }
         } else {
             stateMachine.setState(CHECK_COLLISION);
