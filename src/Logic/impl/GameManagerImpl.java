@@ -263,11 +263,19 @@ public class GameManagerImpl implements GameManager, Observer {
         }
     }
 
+    /**
+     * Starts the move direction for the current player's figure on a Path.
+     * Reduces the player's move value by 1.
+     * Updates the previous position of the figure.
+     * Sets the state to MOVE.
+     */
     public void startMoveDirection() {
         Figure figure = currentPlayer.getFigures().get(currentPlayer.getMovingFigure());
         Field currentPosition = figure.getPosition();
 
+        // Check if the current position is a path without a fork
         if (currentPosition instanceof Path path) {
+            // If the position is a Path, update the position based on the user's input ('v' or 'r')
             figure.setPosition("v".equals(input) ? path.getNext() : path.getPrevious());
         }
 
