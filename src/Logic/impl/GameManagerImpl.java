@@ -42,8 +42,9 @@ public class GameManagerImpl implements GameManager, Observer {
     }
 
     public List<String> getStringListOfMovableFigures() {
-        return Arrays.asList(currentPlayer.getPlayingFieldFigures().stream().map(Figure::toString)
-                .collect(Collectors.joining(";")).split(";"));
+        return currentPlayer.getPlayingFieldFigures().stream()
+                .map(Figure::toString)
+                .collect(Collectors.toList());
     }
 
     public int getFigureIDByString(Player player, String figureName) {
