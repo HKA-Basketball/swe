@@ -298,7 +298,7 @@ public class GameManagerImpl implements GameManager, Observer {
             }
         }
 
-        currentPlayer.setMoveValue(currentPlayer.getMoveValue()-1);
+        currentPlayer.reduceMoveValue(1);
         figure.setPreviousPos(currentPosition);
         stateMachine.setState(MOVE);
     }
@@ -316,7 +316,7 @@ public class GameManagerImpl implements GameManager, Observer {
 
         }
 
-        currentPlayer.setMoveValue(currentPlayer.getMoveValue()-1);
+        currentPlayer.reduceMoveValue(1);
         figure.setPreviousPos(currentPosition);
         stateMachine.setState(MOVE);
     }
@@ -341,7 +341,7 @@ public class GameManagerImpl implements GameManager, Observer {
             }
         }
 
-        currentPlayer.setMoveValue(currentPlayer.getMoveValue()-1);
+        currentPlayer.reduceMoveValue(1);
         figure.setPreviousPos(currentPosition);
         stateMachine.setState(MOVE);
     }
