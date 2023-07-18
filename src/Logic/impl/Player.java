@@ -2,6 +2,7 @@ package Logic.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Player {
 
@@ -64,23 +65,15 @@ public class Player {
     }
 
     public List<Figure> getHomeFigures() {
-        List<Figure> homeFigures = new ArrayList<>(5);
-
-        figures.forEach(figure -> {
-            if (figure.isHome()) homeFigures.add(figure);
-        });
-
-        return homeFigures;
+        return figures.stream()
+                .filter(Figure::isHome)
+                .collect(Collectors.toList());
     }
 
     public List<Figure> getPlayingFieldFigures() {
-        List<Figure> playingFieldFigures = new ArrayList<>(5);
-
-        figures.forEach(figure -> {
-            if (!figure.isHome()) playingFieldFigures.add(figure);
-        });
-
-        return playingFieldFigures;
+        return figures.stream()
+                .filter(figure -> !figure.isHome())
+                .collect(Collectors.toList());
     }
 
     public List<Start> getStartFields() {
