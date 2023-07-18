@@ -268,14 +268,10 @@ public class GameManagerImpl implements GameManager, Observer {
         Field currentPosition = figure.getPosition();
 
         if (currentPosition instanceof Path path) {
-            if ("v".equals(input)) {
-                figure.setPosition(path.getNext());
-            } else {
-                figure.setPosition(path.getPrevious());
-            }
+            figure.setPosition("v".equals(input) ? path.getNext() : path.getPrevious());
         }
 
-        currentPlayer.setMoveValue(currentPlayer.getMoveValue()-1);
+        currentPlayer.reduceMoveValue(1);
         figure.setPreviousPos(currentPosition);
         stateMachine.setState(MOVE);
     }
