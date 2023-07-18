@@ -236,15 +236,26 @@ public class GameManagerImpl implements GameManager, Observer {
         stateMachine.setState(MOVE);
     }
 
+    /**
+     * Moves the current player's figure based on the current state and position.
+     * Determines the appropriate next state for the figure's movement.
+     * Updates the state machine accordingly.
+     */
     public void move() {
         Figure figure = currentPlayer.getFigures().get(currentPlayer.getMovingFigure());
+
+        // Check if the previous position of the figure is null
         boolean isPreviousPositionNull = figure.getPreviousPos() == null;
+        // Check if the current position of the figure is a Path (no fork)
         boolean isPositionPath = figure.getPosition() instanceof Path;
 
+        // Check if the player's move value is greater than 0
         if (currentPlayer.getMoveValue() > 0) {
             if (isPreviousPositionNull) {
+                // If the previous position is null, set the state based on the type of current position
                 stateMachine.setState(isPositionPath ? MOVE_FORWARD_BACKWARD : FORK_REACHED_LEFT_RIGHT_MIDDLE);
             } else {
+                // If the previous position is not null, set the state based on the type of current position
                 stateMachine.setState(isPositionPath ? MOVE_DIRECTION : FORK_REACHED_LEFT_RIGHT);
             }
         } else {
