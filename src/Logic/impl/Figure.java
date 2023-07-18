@@ -47,4 +47,8 @@ public class Figure {
     public void setPreviousPos(Field previousPos) {
         this.previousPos = previousPos;
     }
+
+    public boolean isPreviousPos(Field previous) {
+        return previousPos != null && previousPos.equals(previous);
+    }
 }
