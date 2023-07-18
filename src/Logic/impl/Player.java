@@ -115,6 +115,10 @@ public class Player {
         this.moveValue = moveValue;
     }
 
+    public void reduceMoveValue(int value) {
+        this.moveValue -= value;
+    }
+
     public int getDiceRolls() {
         return diceRolls;
     }
