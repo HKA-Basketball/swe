@@ -52,12 +52,13 @@ public class GuiController implements Observer {
     }
 
     private int getIntInput(int max) {
-
-        var input = 0;
+        int input;
         do {
             try {
                 input = scanner.nextInt();
             } catch (InputMismatchException e) {
+                input = -1; // Invalid input, set to a value outside the valid range
+                scanner.next(); // Clear the invalid input from the scanner
             }
         } while (input < 0 || input > max);
 
