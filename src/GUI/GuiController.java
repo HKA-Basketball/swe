@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+
 import static StateMachine.port.State.Value.*;
 
 public class GuiController implements Observer {
@@ -35,21 +37,18 @@ public class GuiController implements Observer {
     }
 
     private String getStringInput(List<String> valid) {
-
-        var input = "d1650de6-55eb-45d0-a015-c6d387865ca8";
-        while (!valid.contains(input)) {
-            input = scanner.nextLine();
+        while (true) {
+            String input = scanner.nextLine();
+            if (valid.contains(input)) {
+                return input;
+            }
         }
-
-        return input;
     }
 
     private String getStringInput(String valid) {
-        List<String> list = new ArrayList<>(valid.length());
-        for (int i = 0; i < valid.length(); i++) {
-            list.add(String.valueOf(valid.charAt(i)));
-        }
-        return getStringInput(list);
+        return getStringInput(valid.chars()
+                .mapToObj(ch -> String.valueOf((char) ch))
+                .collect(Collectors.toList()));
     }
 
     private int getIntInput(int max) {
