@@ -5,7 +5,6 @@ import StateMachine.StateMachineFactory;
 import StateMachine.impl.StateMachineImpl;
 import StateMachine.port.Observer;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
