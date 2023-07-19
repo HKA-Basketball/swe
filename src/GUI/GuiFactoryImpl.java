@@ -94,7 +94,7 @@ class GuiFactoryImpl implements GuiFactory, Observer {
         });
     }
 
-    public void renderDiceRoll(State.Value type) {
+    public void renderDiceRoll() {
         if("x".equals(gameInfos.getInput()) || "y".equals(gameInfos.getInput())) {
             renderString(GREEN_BRIGHT + gameInfos.getCurrentPlayer().getDiceValue() + RESET);
         }
@@ -119,10 +119,10 @@ class GuiFactoryImpl implements GuiFactory, Observer {
                 FORK_REACHED_LEFT_RIGHT_MIDDLE, FORK_REACHED_LEFT_RIGHT ->
                     renderView(stateMachine.getState());
             case ROLL_DICE_AGAIN, SELECT_FIGURE -> {
-                    renderDiceRoll(stateMachine.getState());
+                    renderDiceRoll();
                     renderView(stateMachine.getState());
             }
-            case NEXT_PLAYER -> renderDiceRoll(stateMachine.getState());
+            case NEXT_PLAYER -> renderDiceRoll();
         }
     }
 }
