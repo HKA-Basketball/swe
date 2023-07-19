@@ -65,10 +65,6 @@ public class GuiController implements Observer {
         return input;
     }
 
-    public String getInput() {
-        return input;
-    }
-
     @Override
     public void update(StateMachineImpl stateMachine) {
         //System.err.println(stateMachine.getState());
