@@ -34,7 +34,7 @@ public enum FontColors {
     WHITE("White", "7"); // WHITE
 
     private static final String FORMAT = "\033[%sm";
-    private static final String COLOR_CODE_BASE = "%d;%s";
+    private static final String COLOR_CODE_BASE = "%s;%s";
 
     private final String name;
     private final String code;
@@ -54,11 +54,8 @@ public enum FontColors {
         }
 
         int baseCode = bright ? 9 : 3;
-        return switch (type) {
-            case NONE -> FORMAT.formatted(COLOR_CODE_BASE.formatted(0, baseCode+code));
-            case BOLD -> FORMAT.formatted(COLOR_CODE_BASE.formatted(1, baseCode+code));
-            case UNDERLINED -> FORMAT.formatted(COLOR_CODE_BASE.formatted(4, baseCode+code));
-            case BACKGROUND -> FORMAT.formatted(COLOR_CODE_BASE.formatted(0, (baseCode+1)+code));
-        };
+        baseCode += FontTypes.BACKGROUND.equals(type) ? 1 : 0;
+        String fullCode = baseCode + code;
+        return FORMAT.formatted(COLOR_CODE_BASE.formatted(type, fullCode));
     }
 }
