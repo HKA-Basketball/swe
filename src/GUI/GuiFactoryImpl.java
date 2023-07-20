@@ -9,7 +9,7 @@ import StateMachine.port.State;
 
 import java.util.*;
 
-import static GUI.ConsoleColors.*;
+import static GUI.FontColors.*;
 import static StateMachine.port.State.Value.*;
 
 class GuiFactoryImpl implements GuiFactory, Observer {
@@ -42,7 +42,7 @@ class GuiFactoryImpl implements GuiFactory, Observer {
         Player player = gameInfos.getCurrentPlayer();
         Figure figure = player.getFigures().get(player.getMovingFigure());
 
-        System.out.print(WHITE_UNDERLINED_BRIGHT);
+        System.out.print(WHITE.getCode(FontTypes.UNDERLINED, true));
 
         switch (renderTyp){
             case ROLL_DICE, FORK_REACHED_LEFT_RIGHT_MIDDLE, FORK_REACHED_LEFT_RIGHT ->
@@ -53,11 +53,11 @@ class GuiFactoryImpl implements GuiFactory, Observer {
                     renderString(String.format(notifications.get(renderTyp), player, figure, player.getMoveValue()));
         }
 
-        System.out.print(RESET);
+        System.out.print(RESET.getCode());
     }
 
     private void renderAction(State.Value renderTyp) {
-        System.out.print(WHITE_BRIGHT);
+        System.out.print(WHITE.getCode(FontTypes.NONE, true));
 
         switch (renderTyp){
             case ROLL_DICE, ROLL_DICE_AGAIN, START_FIELD, SELECT_MOVE_AMOUNT,
@@ -66,15 +66,15 @@ class GuiFactoryImpl implements GuiFactory, Observer {
             case SELECT_FIGURE -> renderString(String.format(actions.get(renderTyp), gameInfos.getStringListOfMovableFigures()));
         }
 
-        System.out.print(RESET);
+        System.out.print(RESET.getCode());
     }
 
     private void renderGameInfo() {
         gameInfos.getPlayers().forEach(player -> {
             switch(player.toString()) {
-                case "RED" -> System.out.print(RED);
-                case "BLUE" -> System.out.print(BLUE);
-                case "YELLOW" -> System.out.print(YELLOW);
+                case "RED" -> System.out.print(RED.getCode(FontTypes.NONE, true));
+                case "BLUE" -> System.out.print(BLUE.getCode(FontTypes.NONE, true));
+                case "YELLOW" -> System.out.print(YELLOW.getCode(FontTypes.NONE, true));
             }
 
             System.out.print(String.format("\t%s:\t", player));
@@ -90,13 +90,13 @@ class GuiFactoryImpl implements GuiFactory, Observer {
                 });
             }
 
-            System.out.println(RESET);
+            System.out.println(RESET.getCode());
         });
     }
 
     public void renderDiceRoll() {
         if("x".equals(gameInfos.getInput()) || "y".equals(gameInfos.getInput())) {
-            renderString(GREEN_BRIGHT + gameInfos.getCurrentPlayer().getDiceValue() + RESET);
+            renderString(GREEN.getCode(FontTypes.NONE, true) + gameInfos.getCurrentPlayer().getDiceValue() + RESET.getCode());
         }
     }
 
