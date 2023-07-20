@@ -33,8 +33,7 @@ public enum FontColors {
     CYAN("Cyan", "6"),  // CYAN
     WHITE("White", "7"); // WHITE
 
-    private static final String FORMAT = "\033[%sm";
-    private static final String COLOR_CODE_BASE = "%s;%s";
+    private static final String FORMAT = "\033[%s;%sm";
 
     private final String name;
     private final String code;
@@ -50,12 +49,11 @@ public enum FontColors {
 
     public String getCode(FontTypes type, boolean bright) {
         if (this.equals(RESET)) {
-            return FORMAT.formatted("0");
+            return "\033[0m";
         }
 
         int baseCode = bright ? 9 : 3;
         baseCode += FontTypes.BACKGROUND.equals(type) ? 1 : 0;
-        String fullCode = baseCode + code;
-        return FORMAT.formatted(COLOR_CODE_BASE.formatted(type, fullCode));
+        return FORMAT.formatted(type, baseCode+code);
     }
 }
