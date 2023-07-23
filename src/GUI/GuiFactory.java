@@ -1,5 +1,5 @@
 package GUI;
 
 public interface GuiFactory {
-    GuiFactory FACTORY = new GuiFactoryImpl();
+    GuiFactory FACTORY = new GuiView();
 }

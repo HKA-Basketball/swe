@@ -12,7 +12,7 @@ import java.util.*;
 import static GUI.FontColors.*;
 import static StateMachine.port.State.Value.*;
 
-class GuiFactoryImpl implements GuiFactory, Observer {
+class GuiView implements GuiFactory, Observer {
 
     private GameManager gameInfos = GameManager.FACTORY;
 
