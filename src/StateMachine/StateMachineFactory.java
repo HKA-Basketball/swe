@@ -4,7 +4,7 @@ import StateMachine.port.Observer;
 import StateMachine.port.State;
 
 public interface StateMachineFactory {
-    StateMachineFactory FACTORY = new StateMachineFactoryImpl();
+    StateMachineFactory FACTORY = new StateMachineFacade();
 
     void getInstance();
     public void setState(State.Value state);

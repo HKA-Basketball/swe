@@ -9,7 +9,7 @@ import StateMachine.port.Subject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StateMachineFactoryImpl implements StateMachineFactory, Subject, StateMachine {
+public class StateMachineFacade implements StateMachineFactory, Subject, StateMachine {
 
     private StateMachineImpl stateMachine;
 
