@@ -15,8 +15,6 @@ import static StateMachine.port.State.Value.*;
 public class GuiController implements Observer {
     private static final Scanner scanner = new Scanner(System.in);
 
-    private String input;
-
     private StateMachineFactory stateMachine = StateMachineFactory.FACTORY;
     private GameManager game = GameManager.FACTORY;
     private GuiFactory gui = GuiFactory.FACTORY;
