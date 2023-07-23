@@ -6,9 +6,6 @@ import StateMachine.port.State;
 import StateMachine.port.StateMachine;
 import StateMachine.port.Subject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class StateMachineFacade implements StateMachineFactory, Subject, StateMachine {
 
     private StateMachineImpl stateMachine;
