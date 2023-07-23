@@ -14,7 +14,6 @@ import static StateMachine.port.State.Value.*;
 
 public class GuiController implements Observer {
     private static final Scanner scanner = new Scanner(System.in);
-    private GameManager gameInfos = GameManager.FACTORY;
 
     private String input;
 
@@ -68,13 +67,13 @@ public class GuiController implements Observer {
     public void update(StateMachineImpl stateMachine) {
         //System.err.println(stateMachine.getState());
         switch (stateMachine.getState()){
-            case ROLL_DICE, ROLL_DICE_AGAIN -> gameInfos.setInput(getStringInput("xy"));
-            case SELECT_FIGURE -> gameInfos.setInput(getStringInput(gameInfos.getStringListOfMovableFigures()));
-            case SELECT_MOVE_AMOUNT -> gameInfos.setInput(String.valueOf(
-                    getIntInput(gameInfos.getCurrentPlayer().getDiceValue())));
-            case MOVE_FORWARD_BACKWARD -> gameInfos.setInput(getStringInput("vr"));
-            case FORK_REACHED_LEFT_RIGHT_MIDDLE -> gameInfos.setInput(getStringInput("lmr"));
-            case FORK_REACHED_LEFT_RIGHT -> gameInfos.setInput(getStringInput("lr"));
+            case ROLL_DICE, ROLL_DICE_AGAIN -> game.setInput(getStringInput("xy"));
+            case SELECT_FIGURE -> game.setInput(getStringInput(game.getStringListOfMovableFigures()));
+            case SELECT_MOVE_AMOUNT -> game.setInput(String.valueOf(
+                    getIntInput(game.getCurrentPlayer().getDiceValue())));
+            case MOVE_FORWARD_BACKWARD -> game.setInput(getStringInput("vr"));
+            case FORK_REACHED_LEFT_RIGHT_MIDDLE -> game.setInput(getStringInput("lmr"));
+            case FORK_REACHED_LEFT_RIGHT -> game.setInput(getStringInput("lr"));
         }
     }
 }
