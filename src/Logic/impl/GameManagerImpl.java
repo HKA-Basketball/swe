@@ -268,7 +268,7 @@ public class GameManagerImpl implements GameManager, Observer {
 
         // Check if the current position is a path without a fork
         if (currentPosition instanceof Path path) {
-            // If the position is a Path, update the position based on the user's input ('v' or 'r')
+            // Update the position based on the user's input ('v' or 'r')
             figure.setPosition("v".equals(input) ? path.getNext() : path.getPrevious());
         }
 
@@ -282,6 +282,7 @@ public class GameManagerImpl implements GameManager, Observer {
         Field currentPosition = figure.getPosition();
 
         if (currentPosition instanceof Fork fork) {
+            // Update the position based on the user's input ('l', 'r', 'm')
             if ("l".equals(input)) {
                 figure.setPosition(fork.getLeft());
             } else if ("r".equals(input)) {
