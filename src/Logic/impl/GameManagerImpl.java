@@ -282,10 +282,10 @@ public class GameManagerImpl implements GameManager, Observer {
         Field currentPosition = figure.getPosition();
 
         if (currentPosition instanceof Fork fork) {
-            if ("r".equals(input)) {
-                figure.setPosition(fork.getRight());
-            } else if ("l".equals(input)) {
+            if ("l".equals(input)) {
                 figure.setPosition(fork.getLeft());
+            } else if ("r".equals(input)) {
+                figure.setPosition(fork.getRight());
             } else {
                 figure.setPosition(fork.getPrevious());
             }
