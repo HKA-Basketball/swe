@@ -150,9 +150,10 @@ public class GameManagerImpl implements GameManager, Observer {
         }
 
         // Update the game state
+        boolean homeIsEmpty = currentPlayer.getHomeFigures().isEmpty();
         boolean playingFieldIsEmpty = currentPlayer.getPlayingFieldFigures().isEmpty();
 
-        if (currentPlayer.getDiceValue() == 7 && (playingFieldIsEmpty || !isStartBlocked())) {
+        if (!homeIsEmpty && (playingFieldIsEmpty || !isStartBlocked()) && currentPlayer.getDiceValue() == 7) {
             // The player has rolled a 7 and is able to place a figure on start
             stateMachine.setState(State.Value.START_FIELD);
 
