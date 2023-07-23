@@ -348,7 +348,7 @@ public class GameManagerImpl implements GameManager, Observer {
         Field currentPosition = figure.getPosition();
 
         for (Player enemyPlayer : this.players) {
-            if (currentPlayer == enemyPlayer) continue;
+            if (enemyPlayer.equals(currentPlayer)) continue;
 
             for (Figure enemyFigure : enemyPlayer.getPlayingFieldFigures()) {
                 if (currentPosition.equals(enemyFigure.getPosition())) {
