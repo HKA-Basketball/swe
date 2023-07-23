@@ -277,10 +277,18 @@ public class GameManagerImpl implements GameManager, Observer {
         stateMachine.setState(MOVE);
     }
 
+    /**
+     * Starts the move for the current player's figure on a Fork.
+     * Updates the position of the figure based on the user's input ('r', 'l', 'm').
+     * Reduces the player's move value by 1.
+     * Updates the previous position of the figure.
+     * Sets the state to MOVE.
+     */
     public void startMoveFork() {
         Figure figure = currentPlayer.getFigures().get(currentPlayer.getMovingFigure());
         Field currentPosition = figure.getPosition();
 
+        // Check if the current position is a fork
         if (currentPosition instanceof Fork fork) {
             // Update the position based on the user's input ('l', 'r', 'm')
             if ("l".equals(input)) {
