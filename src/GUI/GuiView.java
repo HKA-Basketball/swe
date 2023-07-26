@@ -2,7 +2,7 @@ package GUI;
 
 import Logic.impl.Figure;
 import Logic.impl.Player;
-import Logic.port.GameManager;
+import Logic.GameManagerFactory;
 import StateMachine.impl.StateMachineImpl;
 import StateMachine.port.Observer;
 import StateMachine.port.State;
@@ -12,9 +12,9 @@ import java.util.*;
 import static GUI.FontColors.*;
 import static StateMachine.port.State.Value.*;
 
-class GuiView implements GuiFactory, Observer {
+class GuiView implements GuiViewFactory, Observer {
 
-    private GameManager gameInfos = GameManager.FACTORY;
+    private GameManagerFactory gameInfos = GameManagerFactory.FACTORY;
 
     private static final Map<State.Value, String> notifications = Map.of(
             ROLL_DICE, "%s is am Zug",
