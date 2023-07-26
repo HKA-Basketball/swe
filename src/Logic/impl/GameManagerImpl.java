@@ -1,7 +1,7 @@
 package Logic.impl;
 
 import Logic.port.Field;
-import Logic.port.GameManager;
+import Logic.GameManagerFactory;
 import StateMachine.impl.StateMachineImpl;
 import StateMachine.port.Observer;
 import StateMachine.port.State;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 import static StateMachine.port.State.Value.*;
 
-public class GameManagerImpl implements GameManager, Observer {
+public class GameManagerImpl implements GameManagerFactory, Observer {
 
 
     private final StateMachineFactory stateMachine = StateMachineFactory.FACTORY;

@@ -1,12 +1,12 @@
-package Logic.port;
+package Logic;
 
 import Logic.impl.GameManagerImpl;
 import Logic.impl.Player;
 
 import java.util.List;
 
-public interface GameManager {
-    GameManager FACTORY = new GameManagerImpl();
+public interface GameManagerFactory {
+    GameManagerFactory FACTORY = new GameManagerImpl();
 
     List<Player> getPlayers();
     Player getCurrentPlayer();
