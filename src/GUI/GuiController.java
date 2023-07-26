@@ -1,6 +1,6 @@
 package GUI;
 
-import Logic.port.GameManager;
+import Logic.GameManagerFactory;
 import StateMachine.StateMachineFactory;
 import StateMachine.impl.StateMachineImpl;
 import StateMachine.port.Observer;
@@ -12,21 +12,26 @@ import java.util.stream.Collectors;
 
 import static StateMachine.port.State.Value.*;
 
-public class GuiController implements Observer {
+class GuiController implements GuiControllerFactory, Observer {
     private static final Scanner scanner = new Scanner(System.in);
 
     private StateMachineFactory stateMachine = StateMachineFactory.FACTORY;
-    private GameManager game = GameManager.FACTORY;
-    private GuiFactory gui = GuiFactory.FACTORY;
+    private GameManagerFactory game = GameManagerFactory.FACTORY;
+    private GuiViewFactory gui = GuiViewFactory.FACTORY;
 
     public GuiController() {
         stateMachine.getInstance();
+        if (stateMachine == null) {
+            //ERROR
+        }
         stateMachine.attach((Observer) gui);
         stateMachine.attach(this);
         stateMachine.attach((Observer) game);
 
         stateMachine.setState(ROLL_DICE);
+    }
 
+    public void startLoop() {
         while (true) {
             stateMachine.notifyObservers();
         }
